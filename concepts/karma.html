@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karma System — OASIS Docs</title>
+<meta name="description" content="Conceptual guide to the OASIS Karma reputation system — design principles, karma types, and OApp integration patterns.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Titillium+Web:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<button class="mobile-menu-btn">&#9776;</button>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="/"><div class="sidebar-logo-icon">O</div><div class="sidebar-logo-text"><span class="site-name">OASIS DOCS</span><span class="site-sub">Developer Reference</span></div></a>
+    <div class="sidebar-search"><input type="search" placeholder="Search docs…" aria-label="Search"></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item" href="/">Home</a>
+      <a class="nav-item" href="/concepts/architecture">Architecture</a>
+      <a class="nav-item" href="/concepts/holons">Holons &amp; Data Model</a>
+      <a class="nav-item" href="/concepts/did-auth">DID Authentication</a>
+      <a class="nav-item active" href="/concepts/karma">Karma System</a>
+      <div class="nav-section-title">SDK Reference</div>
+      <a class="nav-item" href="/sdks/web4-api">WEB4 API (JS)</a>
+      <a class="nav-item" href="/sdks/web5-api">WEB5 API (JS)</a>
+      <a class="nav-item" href="/sdks/dotnet">OASIS .NET SDK</a>
+      <div class="nav-section-title">REST API</div>
+      <a class="nav-item" href="/reference/avatar">Avatar</a>
+      <a class="nav-item" href="/reference/karma">Karma</a>
+      <a class="nav-item" href="/reference/data">Data &amp; Holons</a>
+      <a class="nav-item" href="/reference/nft">NFT &amp; Wallet</a>
+      <a class="nav-item" href="/reference/search">Search</a>
+      <a class="nav-item" href="/reference/errors">Errors &amp; Codes</a>
+      <div class="nav-section-title">Provider Guides</div>
+      <a class="nav-item" href="/providers/overview">Provider Overview</a>
+      <a class="nav-item" href="/providers/holochain">Holochain / HoloNET</a>
+      <a class="nav-item" href="/providers/hyperdrive">HyperDrive</a>
+      <a class="nav-item" href="/providers/onode">ONODE Setup</a>
+      <a class="nav-item" href="/providers/ethereum">Ethereum / EVM</a>
+      <a class="nav-item" href="/providers/custom">Building a Provider</a>
+      <div class="nav-section-title">Resources</div>
+      <a class="nav-item" href="https://learn.oasisomniverse.one" target="_blank">Tutorials ↗</a>
+      <a class="nav-item" href="https://oportal.oasisomniverse.one/developer" target="_blank">Dev Portal ↗</a>
+      <a class="nav-item" href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank">GitHub ↗</a>
+      <a class="nav-item" href="/changelog">Changelog</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://oasisomniverse.one" target="_blank">oasisomniverse.one</a>
+      <a href="https://discord.gg/oasis" target="_blank">Discord Community</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="/">OASIS Docs</a><span class="breadcrumb-sep">/</span><span>Karma System</span></div>
+      <div class="page-meta"><span class="badge badge-concept">Concept</span></div>
+      <h1 class="page-title">Karma System</h1>
+      <p class="page-desc">Karma is OASIS's cross-platform reputation layer. It accumulates across all OApps and can be used to gate features, unlock content, and surface trustworthy contributors.</p>
+    </div>
+
+    <h2 id="principles">Design Principles</h2>
+    <ul>
+      <li><strong>Cross-OApp</strong> — karma earned in one OApp is visible in all others. A player's reputation travels with their avatar.</li>
+      <li><strong>Transparent</strong> — the full karma history (Akashic Record) is accessible via API. Every award and deduction has a source and reason.</li>
+      <li><strong>Positive-sum</strong> — the system is designed to encourage cooperation, creativity, and helping others — not zero-sum competition.</li>
+      <li><strong>OApp-sovereign</strong> — OApps define their own award events and amounts. OASIS provides the infrastructure; OApps define the economy.</li>
+    </ul>
+
+    <h2 id="akashic-record">The Akashic Record</h2>
+    <p>Every karma event is recorded in the avatar's Akashic Record — an immutable, append-only log of every positive and negative karma event, including source OApp, event type, timestamp, and amount. This makes karma auditable and resistant to retroactive manipulation.</p>
+
+    <h2 id="oapp-integration">OApp Integration Pattern</h2>
+    <p>A good OApp karma integration follows these rules:</p>
+    <ol>
+      <li><strong>Award on meaningful events only</strong> — quest completion, helping another player, creative contribution. Not for clicking buttons or logging in daily.</li>
+      <li><strong>Use specific karma types</strong> — <code>CompletedQuest</code> rather than <code>JoinedOAPP</code> for quest events. Specific types make the Akashic Record useful.</li>
+      <li><strong>Gate content on karma thresholds</strong> — use <code>GetAvatarsWithKarmaGreaterThan</code> to unlock hard content for high-karma players.</li>
+      <li><strong>Deduct sparingly</strong> — negative karma should reflect genuine antisocial behaviour, not minor mistakes.</li>
+    </ol>
+
+    <h2 id="karma-tiers">Suggested Karma Tiers</h2>
+    <p>These tiers are a starting point — tune them to your OApp's economy:</p>
+    <div class="api-table-wrap"><table>
+      <thead><tr><th>Tier</th><th>Karma Range</th><th>Suggested unlocks</th></tr></thead>
+      <tbody>
+        <tr><td>Initiate</td><td>0 – 99</td><td>Basic OApp access</td></tr>
+        <tr><td>Apprentice</td><td>100 – 499</td><td>Social features, clan membership</td></tr>
+        <tr><td>Adept</td><td>500 – 1 999</td><td>Advanced quests, item crafting</td></tr>
+        <tr><td>Master</td><td>2 000 – 9 999</td><td>Rare NFT drops, leadership roles</td></tr>
+        <tr><td>Grandmaster</td><td>10 000+</td><td>Governance participation, exclusive zones</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="doc-nav">
+      <a href="/concepts/did-auth"><div class="nav-direction">← Previous</div><div class="nav-title">DID Authentication</div></a>
+      <a class="next" href="/sdks/web4-api"><div class="nav-direction">Next →</div><div class="nav-title">WEB4 JS SDK</div></a>
+    </div>
+  </main>
+
+  <aside class="rail">
+    <div class="rail-title">On this page</div>
+    <nav class="rail-nav">
+      <a href="#principles">Design Principles</a>
+      <a href="#akashic-record">Akashic Record</a>
+      <a href="#oapp-integration">OApp Integration</a>
+      <a href="#karma-tiers">Karma Tiers</a>
+    </nav>
+  </aside>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

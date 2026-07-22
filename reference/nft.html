@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NFT &amp; Wallet API — OASIS Docs</title>
+<meta name="description" content="Reference for the OASIS NFT and Wallet REST API — mint, transfer, and query NFTs across multiple chains.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Titillium+Web:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<button class="mobile-menu-btn">&#9776;</button>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="/"><div class="sidebar-logo-icon">O</div><div class="sidebar-logo-text"><span class="site-name">OASIS DOCS</span><span class="site-sub">Developer Reference</span></div></a>
+    <div class="sidebar-search"><input type="search" placeholder="Search docs…" aria-label="Search"></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item" href="/">Home</a>
+      <a class="nav-item" href="/concepts/architecture">Architecture</a>
+      <a class="nav-item" href="/concepts/holons">Holons &amp; Data Model</a>
+      <a class="nav-item" href="/concepts/did-auth">DID Authentication</a>
+      <a class="nav-item" href="/concepts/karma">Karma System</a>
+      <div class="nav-section-title">SDK Reference</div>
+      <a class="nav-item" href="/sdks/web4-api">WEB4 API (JS)</a>
+      <a class="nav-item" href="/sdks/web5-api">WEB5 API (JS)</a>
+      <a class="nav-item" href="/sdks/dotnet">OASIS .NET SDK</a>
+      <div class="nav-section-title">REST API</div>
+      <a class="nav-item" href="/reference/avatar">Avatar</a>
+      <a class="nav-item" href="/reference/karma">Karma</a>
+      <a class="nav-item" href="/reference/data">Data &amp; Holons</a>
+      <a class="nav-item active" href="/reference/nft">NFT &amp; Wallet</a>
+      <a class="nav-item" href="/reference/search">Search</a>
+      <a class="nav-item" href="/reference/errors">Errors &amp; Codes</a>
+      <div class="nav-section-title">Provider Guides</div>
+      <a class="nav-item" href="/providers/overview">Provider Overview</a>
+      <a class="nav-item" href="/providers/holochain">Holochain / HoloNET</a>
+      <a class="nav-item" href="/providers/hyperdrive">HyperDrive</a>
+      <a class="nav-item" href="/providers/onode">ONODE Setup</a>
+      <a class="nav-item" href="/providers/ethereum">Ethereum / EVM</a>
+      <a class="nav-item" href="/providers/custom">Building a Provider</a>
+      <div class="nav-section-title">Resources</div>
+      <a class="nav-item" href="https://learn.oasisomniverse.one" target="_blank">Tutorials ↗</a>
+      <a class="nav-item" href="https://oportal.oasisomniverse.one/developer" target="_blank">Dev Portal ↗</a>
+      <a class="nav-item" href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank">GitHub ↗</a>
+      <a class="nav-item" href="/changelog">Changelog</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://oasisomniverse.one" target="_blank">oasisomniverse.one</a>
+      <a href="https://discord.gg/oasis" target="_blank">Discord Community</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="/">OASIS Docs</a><span class="breadcrumb-sep">/</span><a href="/reference/nft">REST API</a><span class="breadcrumb-sep">/</span><span>NFT &amp; Wallet</span></div>
+      <div class="page-meta"><span class="badge badge-reference">Reference</span><span class="badge badge-version">v4.6</span></div>
+      <h1 class="page-title">NFT &amp; Wallet API</h1>
+      <p class="page-desc">Mint, transfer, and query NFTs across Ethereum, Solana, EOS.IO, and other configured chains. OASIS abstracts the chain-specific calls behind a uniform API.</p>
+    </div>
+
+    <h2 id="mint">Mint NFT</h2>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/nft/mint</span></div>
+    <div class="api-table-wrap"><table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>mintedByAvatarId</code><span class="required-badge">required</span></td><td>guid</td><td>Avatar minting the NFT</td></tr>
+        <tr><td><code>title</code><span class="required-badge">required</span></td><td>string</td><td>NFT display name</td></tr>
+        <tr><td><code>description</code></td><td>string</td><td>NFT description</td></tr>
+        <tr><td><code>imageUrl</code></td><td>string</td><td>URL or IPFS CID for the NFT image</td></tr>
+        <tr><td><code>metaData</code></td><td>object</td><td>Arbitrary key-value metadata stored on-chain</td></tr>
+        <tr><td><code>price</code></td><td>number</td><td>Initial listing price (in chain's native token)</td></tr>
+        <tr><td><code>providerType</code></td><td>string</td><td>Chain provider — e.g. <code>EthereumOASIS</code>, <code>SolanaOASIS</code></td></tr>
+        <tr><td><code>onChainProviderType</code></td><td>string</td><td>EVM contract type override</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="transfer">Transfer NFT</h2>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/nft/transfer</span></div>
+    <div class="api-table-wrap"><table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>nftId</code><span class="required-badge">required</span></td><td>guid</td><td>OASIS NFT identifier</td></tr>
+        <tr><td><code>fromAvatarId</code><span class="required-badge">required</span></td><td>guid</td><td>Current owner</td></tr>
+        <tr><td><code>toAvatarId</code><span class="required-badge">required</span></td><td>guid</td><td>Recipient avatar</td></tr>
+        <tr><td><code>providerType</code></td><td>string</td><td>Chain provider to execute on</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="get-nfts">Get NFTs for Avatar</h2>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/nft/GetNFTsForAvatar/{avatarId}</span></div>
+    <p>Returns all NFTs owned by the given avatar, across all chains. Optionally filter with <code>?providerType=EthereumOASIS</code>.</p>
+
+    <h2 id="get-nft">Get NFT</h2>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/nft/{id}</span></div>
+    <p>Fetch a single NFT by its OASIS ID, including full metadata and ownership history.</p>
+
+    <h2 id="wallet">Wallet</h2>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/wallet/GetBalanceForAvatar/{avatarId}</span></div>
+    <p>Returns token balances across all chains the avatar has interacted with.</p>
+
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/wallet/GetBalanceForAvatar/{avatarId}/{providerType}</span></div>
+    <p>Returns balance for a specific chain/provider.</p>
+
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/wallet/GetTransactionsForAvatar/{avatarId}</span></div>
+    <p>Full transaction history for the avatar's wallet, newest first.</p>
+
+    <div class="callout callout-warning">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body">
+        <div class="callout-title">Chain-specific configuration required</div>
+        <p>NFT minting and wallet operations require the relevant chain provider to be registered and configured in your ONODE. See <a href="/providers/ethereum">Ethereum / EVM</a> or the relevant provider guide before calling these endpoints.</p>
+      </div>
+    </div>
+
+    <div class="doc-nav">
+      <a href="/reference/data"><div class="nav-direction">← Previous</div><div class="nav-title">Data &amp; Holons API</div></a>
+      <a class="next" href="/reference/search"><div class="nav-direction">Next →</div><div class="nav-title">Search API</div></a>
+    </div>
+  </main>
+
+  <aside class="rail">
+    <div class="rail-title">On this page</div>
+    <nav class="rail-nav">
+      <a href="#mint">Mint NFT</a>
+      <a href="#transfer">Transfer NFT</a>
+      <a href="#get-nfts">Get NFTs for Avatar</a>
+      <a href="#get-nft">Get NFT</a>
+      <a href="#wallet">Wallet</a>
+    </nav>
+  </aside>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HyperDrive — OASIS Docs</title>
+<meta name="description" content="Guide to configuring HyperDrive — the OASIS distributed data replication and failover engine.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Titillium+Web:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<button class="mobile-menu-btn">&#9776;</button>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="/"><div class="sidebar-logo-icon">O</div><div class="sidebar-logo-text"><span class="site-name">OASIS DOCS</span><span class="site-sub">Developer Reference</span></div></a>
+    <div class="sidebar-search"><input type="search" placeholder="Search docs…" aria-label="Search"></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item" href="/">Home</a>
+      <a class="nav-item" href="/concepts/architecture">Architecture</a>
+      <a class="nav-item" href="/concepts/holons">Holons &amp; Data Model</a>
+      <a class="nav-item" href="/concepts/did-auth">DID Authentication</a>
+      <a class="nav-item" href="/concepts/karma">Karma System</a>
+      <div class="nav-section-title">SDK Reference</div>
+      <a class="nav-item" href="/sdks/web4-api">WEB4 API (JS)</a>
+      <a class="nav-item" href="/sdks/web5-api">WEB5 API (JS)</a>
+      <a class="nav-item" href="/sdks/dotnet">OASIS .NET SDK</a>
+      <div class="nav-section-title">REST API</div>
+      <a class="nav-item" href="/reference/avatar">Avatar</a>
+      <a class="nav-item" href="/reference/karma">Karma</a>
+      <a class="nav-item" href="/reference/data">Data &amp; Holons</a>
+      <a class="nav-item" href="/reference/nft">NFT &amp; Wallet</a>
+      <a class="nav-item" href="/reference/search">Search</a>
+      <a class="nav-item" href="/reference/errors">Errors &amp; Codes</a>
+      <div class="nav-section-title">Provider Guides</div>
+      <a class="nav-item" href="/providers/overview">Provider Overview</a>
+      <a class="nav-item" href="/providers/holochain">Holochain / HoloNET</a>
+      <a class="nav-item active" href="/providers/hyperdrive">HyperDrive</a>
+      <a class="nav-item" href="/providers/onode">ONODE Setup</a>
+      <a class="nav-item" href="/providers/ethereum">Ethereum / EVM</a>
+      <a class="nav-item" href="/providers/custom">Building a Provider</a>
+      <div class="nav-section-title">Resources</div>
+      <a class="nav-item" href="https://learn.oasisomniverse.one" target="_blank">Tutorials ↗</a>
+      <a class="nav-item" href="https://oportal.oasisomniverse.one/developer" target="_blank">Dev Portal ↗</a>
+      <a class="nav-item" href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank">GitHub ↗</a>
+      <a class="nav-item" href="/changelog">Changelog</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://oasisomniverse.one" target="_blank">oasisomniverse.one</a>
+      <a href="https://discord.gg/oasis" target="_blank">Discord Community</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="/">OASIS Docs</a><span class="breadcrumb-sep">/</span><a href="/providers/overview">Provider Guides</a><span class="breadcrumb-sep">/</span><span>HyperDrive</span></div>
+      <div class="page-meta"><span class="badge badge-guide">Guide</span></div>
+      <h1 class="page-title">HyperDrive</h1>
+      <p class="page-desc">HyperDrive sits between the OASIS kernel and the provider layer. It handles replication, failover, health monitoring, and data migration across all registered providers.</p>
+    </div>
+
+    <h2 id="how-it-works">How It Works</h2>
+    <p>On every write, HyperDrive:</p>
+    <ol>
+      <li>Writes to the primary provider.</li>
+      <li>Asynchronously replicates to all backup providers in the configured list.</li>
+      <li>Tracks success/failure per provider and updates health scores.</li>
+    </ol>
+    <p>On every read, HyperDrive:</p>
+    <ol>
+      <li>Attempts the primary provider.</li>
+      <li>If it fails or is below the health threshold, falls over to the next backup provider.</li>
+      <li>Returns the result from whichever provider first responds successfully.</li>
+    </ol>
+
+    <h2 id="configuration">Configuration</h2>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">json — OASISDNA.json</span><button class="copy-btn">Copy</button></div>
+      <pre>{
+  <span class="str">"OASISDNA"</span>: {
+    <span class="str">"DefaultProviderType"</span>:        <span class="str">"MongoDBOASIS"</span>,
+    <span class="str">"BackupProviderTypes"</span>:        [ <span class="str">"SQLiteOASIS"</span>, <span class="str">"HoloOASIS"</span> ],
+    <span class="str">"AutoFailoverEnabled"</span>:        <span class="kw">true</span>,
+    <span class="str">"AutoReplicationEnabled"</span>:     <span class="kw">true</span>,
+    <span class="str">"AutoLoadBalanceEnabled"</span>:     <span class="kw">false</span>,
+    <span class="str">"ProviderHealthCheckInterval"</span>: <span class="num">30</span>,   <span class="cmt">// seconds</span>
+    <span class="str">"ProviderHealthThreshold"</span>:     <span class="num">0.7</span>   <span class="cmt">// 0–1; below this, provider is bypassed</span>
+  }
+}</pre>
+    </div>
+
+    <h2 id="health-scores">Provider Health Scores</h2>
+    <p>HyperDrive maintains a rolling health score (0.0–1.0) for each provider based on recent operation success rates. A provider below <code>ProviderHealthThreshold</code> is automatically bypassed for reads until it recovers.</p>
+    <p>Query health scores at runtime via the API:</p>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/hyperdrive/GetProviderHealth</span></div>
+
+    <h2 id="manual-replication">Manual Replication</h2>
+    <p>Trigger a one-off replication from the primary to a specific backup provider:</p>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/hyperdrive/ReplicateToProvider</span></div>
+    <p>Body: <code>{ "targetProviderType": "HoloOASIS" }</code></p>
+    <p>Useful after adding a new provider to backfill its data store from the primary.</p>
+
+    <h2 id="load-balancing">Load Balancing</h2>
+    <p>When <code>AutoLoadBalanceEnabled</code> is true, HyperDrive distributes reads across all healthy providers using a weighted round-robin, weighted by health score. Suitable for read-heavy deployments with multiple fast providers.</p>
+
+    <div class="callout callout-warning">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body">
+        <div class="callout-title">Eventual consistency</div>
+        <p>Async replication means backup providers may be briefly behind the primary after a write. For reads that must see the latest write immediately, either disable async replication (set synchronous mode) or always read from the primary by passing <code>providerType</code> explicitly.</p>
+      </div>
+    </div>
+
+    <div class="doc-nav">
+      <a href="/providers/holochain"><div class="nav-direction">← Previous</div><div class="nav-title">Holochain / HoloNET</div></a>
+      <a class="next" href="/providers/onode"><div class="nav-direction">Next →</div><div class="nav-title">ONODE Setup</div></a>
+    </div>
+  </main>
+
+  <aside class="rail">
+    <div class="rail-title">On this page</div>
+    <nav class="rail-nav">
+      <a href="#how-it-works">How It Works</a>
+      <a href="#configuration">Configuration</a>
+      <a href="#health-scores">Health Scores</a>
+      <a href="#manual-replication">Manual Replication</a>
+      <a href="#load-balancing">Load Balancing</a>
+    </nav>
+  </aside>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

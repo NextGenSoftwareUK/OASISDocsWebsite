@@ -1,0 +1,13 @@
+{
+  "name": "oasis-docs-website",
+  "version": "1.0.0",
+  "description": "OASIS Omniverse developer reference documentation — docs.oasisomniverse.one",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve . -p 3002",
+    "build": "echo 'Static site — no build step required'"
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Errors &amp; Codes — OASIS Docs</title>
+<meta name="description" content="OASIS API response envelope semantics, error codes, and troubleshooting guidance.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Titillium+Web:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<button class="mobile-menu-btn">&#9776;</button>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="/"><div class="sidebar-logo-icon">O</div><div class="sidebar-logo-text"><span class="site-name">OASIS DOCS</span><span class="site-sub">Developer Reference</span></div></a>
+    <div class="sidebar-search"><input type="search" placeholder="Search docs…" aria-label="Search"></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item" href="/">Home</a>
+      <a class="nav-item" href="/concepts/architecture">Architecture</a>
+      <a class="nav-item" href="/concepts/holons">Holons &amp; Data Model</a>
+      <a class="nav-item" href="/concepts/did-auth">DID Authentication</a>
+      <a class="nav-item" href="/concepts/karma">Karma System</a>
+      <div class="nav-section-title">SDK Reference</div>
+      <a class="nav-item" href="/sdks/web4-api">WEB4 API (JS)</a>
+      <a class="nav-item" href="/sdks/web5-api">WEB5 API (JS)</a>
+      <a class="nav-item" href="/sdks/dotnet">OASIS .NET SDK</a>
+      <div class="nav-section-title">REST API</div>
+      <a class="nav-item" href="/reference/avatar">Avatar</a>
+      <a class="nav-item" href="/reference/karma">Karma</a>
+      <a class="nav-item" href="/reference/data">Data &amp; Holons</a>
+      <a class="nav-item" href="/reference/nft">NFT &amp; Wallet</a>
+      <a class="nav-item" href="/reference/search">Search</a>
+      <a class="nav-item active" href="/reference/errors">Errors &amp; Codes</a>
+      <div class="nav-section-title">Provider Guides</div>
+      <a class="nav-item" href="/providers/overview">Provider Overview</a>
+      <a class="nav-item" href="/providers/holochain">Holochain / HoloNET</a>
+      <a class="nav-item" href="/providers/hyperdrive">HyperDrive</a>
+      <a class="nav-item" href="/providers/onode">ONODE Setup</a>
+      <a class="nav-item" href="/providers/ethereum">Ethereum / EVM</a>
+      <a class="nav-item" href="/providers/custom">Building a Provider</a>
+      <div class="nav-section-title">Resources</div>
+      <a class="nav-item" href="https://learn.oasisomniverse.one" target="_blank">Tutorials ↗</a>
+      <a class="nav-item" href="https://oportal.oasisomniverse.one/developer" target="_blank">Dev Portal ↗</a>
+      <a class="nav-item" href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank">GitHub ↗</a>
+      <a class="nav-item" href="/changelog">Changelog</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://oasisomniverse.one" target="_blank">oasisomniverse.one</a>
+      <a href="https://discord.gg/oasis" target="_blank">Discord Community</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="/">OASIS Docs</a><span class="breadcrumb-sep">/</span><a href="/reference/errors">REST API</a><span class="breadcrumb-sep">/</span><span>Errors &amp; Codes</span></div>
+      <div class="page-meta"><span class="badge badge-reference">Reference</span></div>
+      <h1 class="page-title">Errors &amp; Codes</h1>
+      <p class="page-desc">How to interpret the OASIS response envelope, handle errors gracefully, and understand what each status means.</p>
+    </div>
+
+    <h2 id="envelope">The Response Envelope</h2>
+    <p>Every OASIS API response — success or failure — is wrapped in the same envelope:</p>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">json</span><button class="copy-btn">Copy</button></div>
+      <pre>{
+  <span class="str">"result"</span>:         <span class="kw">null</span>,
+  <span class="str">"isError"</span>:        <span class="kw">true</span>,
+  <span class="str">"isWarning"</span>:      <span class="kw">false</span>,
+  <span class="str">"message"</span>:        <span class="str">"A username with that name already exists."</span>,
+  <span class="str">"detailedMessage"</span>: <span class="str">"Duplicate username: david"</span>
+}</pre>
+    </div>
+
+    <div class="callout callout-danger">
+      <div class="callout-icon">🔴</div>
+      <div class="callout-body">
+        <div class="callout-title">Do not rely solely on HTTP status codes</div>
+        <p>OASIS returns <code>HTTP 200</code> for many business-logic failures. Always inspect <code>isError</code> first before consuming <code>result</code>.</p>
+      </div>
+    </div>
+
+    <h2 id="semantics">isError vs isWarning</h2>
+    <div class="api-table-wrap"><table>
+      <thead><tr><th>Flag</th><th>Meaning</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td><code>isError: false, isWarning: false</code></td><td>Full success</td><td>Consume <code>result</code> normally</td></tr>
+        <tr><td><code>isError: false, isWarning: true</code></td><td>Partial success — something non-fatal happened</td><td>Consume <code>result</code>, surface <code>message</code> to the user if relevant</td></tr>
+        <tr><td><code>isError: true</code></td><td>Hard failure — <code>result</code> will be <code>null</code></td><td>Show <code>message</code> to the user, do not consume <code>result</code></td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="common-errors">Common Error Messages</h2>
+    <div class="api-table-wrap"><table>
+      <thead><tr><th>message</th><th>Cause</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr><td>A username with that name already exists.</td><td>Duplicate username on register or update</td><td>Prompt user to choose a different username</td></tr>
+        <tr><td>A avatar with that email already exists.</td><td>Duplicate email on register or update</td><td>Offer login or password-reset flow</td></tr>
+        <tr><td>Email has not been verified.</td><td>Login attempted before verification</td><td>Re-send verification email</td></tr>
+        <tr><td>Username or password is incorrect.</td><td>Bad credentials on authenticate</td><td>Show generic auth error to user</td></tr>
+        <tr><td>Unauthorized</td><td>Missing or expired JWT</td><td>Re-authenticate and retry with a fresh token</td></tr>
+        <tr><td>Avatar not found.</td><td>ID doesn't exist or was soft-deleted</td><td>Verify the avatar ID is correct</td></tr>
+        <tr><td>An unknown error has occurred.</td><td>Unhandled server exception</td><td>Check <code>detailedMessage</code>; report to OASIS support</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="http-codes">HTTP Status Codes</h2>
+    <div class="api-table-wrap"><table>
+      <thead><tr><th>Code</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><code>200</code></td><td>Request was received and processed — check <code>isError</code> for outcome</td></tr>
+        <tr><td><code>400</code></td><td>Malformed request — missing required fields or invalid JSON</td></tr>
+        <tr><td><code>401</code></td><td>No or invalid Authorization header</td></tr>
+        <tr><td><code>403</code></td><td>Authenticated but not permitted (e.g. non-admin accessing admin endpoint)</td></tr>
+        <tr><td><code>404</code></td><td>Route not found — check the endpoint path</td></tr>
+        <tr><td><code>500</code></td><td>Unhandled server error — retry with backoff; contact support if persistent</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="handling-pattern">Recommended Handling Pattern</h2>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">javascript</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="kw">async function</span> <span class="fn">oasisRequest</span>(url, options = {}) {
+  <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(url, {
+    ...options,
+    headers: {
+      <span class="str">'Content-Type'</span>: <span class="str">'application/json'</span>,
+      <span class="str">'Authorization'</span>: <span class="str">`Bearer <span class="kw">${</span>token<span class="kw">}</span>`</span>,
+      ...options.headers
+    }
+  });
+
+  <span class="kw">if</span> (!res.ok) <span class="kw">throw new</span> <span class="cls">Error</span>(<span class="str">`HTTP <span class="kw">${</span>res.status<span class="kw">}</span>`</span>);
+
+  <span class="kw">const</span> envelope = <span class="kw">await</span> res.<span class="fn">json</span>();
+
+  <span class="kw">if</span> (envelope.isError) {
+    <span class="kw">throw new</span> <span class="cls">Error</span>(envelope.message || <span class="str">'OASIS error'</span>);
+  }
+
+  <span class="kw">if</span> (envelope.isWarning) {
+    console.<span class="fn">warn</span>(<span class="str">'[OASIS]'</span>, envelope.message);
+  }
+
+  <span class="kw">return</span> envelope.result;
+}</pre>
+    </div>
+
+    <div class="doc-nav">
+      <a href="/reference/search"><div class="nav-direction">← Previous</div><div class="nav-title">Search API</div></a>
+      <a class="next" href="/concepts/architecture"><div class="nav-direction">Next →</div><div class="nav-title">Architecture</div></a>
+    </div>
+  </main>
+
+  <aside class="rail">
+    <div class="rail-title">On this page</div>
+    <nav class="rail-nav">
+      <a href="#envelope">Response Envelope</a>
+      <a href="#semantics">isError vs isWarning</a>
+      <a href="#common-errors">Common Errors</a>
+      <a href="#http-codes">HTTP Status Codes</a>
+      <a href="#handling-pattern">Handling Pattern</a>
+    </nav>
+  </aside>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

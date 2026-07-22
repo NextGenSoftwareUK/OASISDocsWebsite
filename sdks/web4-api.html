@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WEB4 JS SDK — OASIS Docs</title>
+<meta name="description" content="Full module reference for the @oasisomniverse/web4-api JavaScript SDK.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Titillium+Web:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<button class="mobile-menu-btn">&#9776;</button>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="/"><div class="sidebar-logo-icon">O</div><div class="sidebar-logo-text"><span class="site-name">OASIS DOCS</span><span class="site-sub">Developer Reference</span></div></a>
+    <div class="sidebar-search"><input type="search" placeholder="Search docs…" aria-label="Search"></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item" href="/">Home</a>
+      <a class="nav-item" href="/concepts/architecture">Architecture</a>
+      <a class="nav-item" href="/concepts/holons">Holons &amp; Data Model</a>
+      <a class="nav-item" href="/concepts/did-auth">DID Authentication</a>
+      <a class="nav-item" href="/concepts/karma">Karma System</a>
+      <div class="nav-section-title">SDK Reference</div>
+      <a class="nav-item active" href="/sdks/web4-api">WEB4 API (JS)</a>
+      <a class="nav-item" href="/sdks/web5-api">WEB5 API (JS)</a>
+      <a class="nav-item" href="/sdks/dotnet">OASIS .NET SDK</a>
+      <div class="nav-section-title">REST API</div>
+      <a class="nav-item" href="/reference/avatar">Avatar</a>
+      <a class="nav-item" href="/reference/karma">Karma</a>
+      <a class="nav-item" href="/reference/data">Data &amp; Holons</a>
+      <a class="nav-item" href="/reference/nft">NFT &amp; Wallet</a>
+      <a class="nav-item" href="/reference/search">Search</a>
+      <a class="nav-item" href="/reference/errors">Errors &amp; Codes</a>
+      <div class="nav-section-title">Provider Guides</div>
+      <a class="nav-item" href="/providers/overview">Provider Overview</a>
+      <a class="nav-item" href="/providers/holochain">Holochain / HoloNET</a>
+      <a class="nav-item" href="/providers/hyperdrive">HyperDrive</a>
+      <a class="nav-item" href="/providers/onode">ONODE Setup</a>
+      <a class="nav-item" href="/providers/ethereum">Ethereum / EVM</a>
+      <a class="nav-item" href="/providers/custom">Building a Provider</a>
+      <div class="nav-section-title">Resources</div>
+      <a class="nav-item" href="https://learn.oasisomniverse.one" target="_blank">Tutorials ↗</a>
+      <a class="nav-item" href="https://oportal.oasisomniverse.one/developer" target="_blank">Dev Portal ↗</a>
+      <a class="nav-item" href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank">GitHub ↗</a>
+      <a class="nav-item" href="/changelog">Changelog</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://oasisomniverse.one" target="_blank">oasisomniverse.one</a>
+      <a href="https://discord.gg/oasis" target="_blank">Discord Community</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="/">OASIS Docs</a><span class="breadcrumb-sep">/</span><span>SDK Reference</span><span class="breadcrumb-sep">/</span><span>WEB4 API</span></div>
+      <div class="page-meta"><span class="badge badge-reference">Reference</span><span class="badge badge-version">v4.6</span></div>
+      <h1 class="page-title">WEB4 JS SDK</h1>
+      <p class="page-desc">Full module reference for <code>@oasisomniverse/web4-api</code> — the isomorphic JavaScript SDK for the OASIS WEB4 API. Works in Node 18+ and all modern browsers.</p>
+    </div>
+
+    <h2 id="install">Installation</h2>
+    <div class="code-block terminal-block">
+      <div class="code-block-header"><span class="code-lang">terminal</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cmd">npm install @oasisomniverse/web4-api</span></pre>
+    </div>
+
+    <h2 id="init">Initialisation</h2>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">javascript</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="kw">import</span> OASIS <span class="kw">from</span> <span class="str">'@oasisomniverse/web4-api'</span>;
+
+<span class="kw">const</span> oasis = <span class="kw">new</span> <span class="cls">OASIS</span>({
+  baseUrl: <span class="str">'https://api.oasisomniverse.one'</span>,  <span class="cmt">// or your ONODE URL</span>
+  token:   <span class="str">'your-jwt-token'</span>                   <span class="cmt">// set after authenticate()</span>
+});</pre>
+    </div>
+
+    <h2 id="auth-module">Auth Module — <code>oasis.auth</code></h2>
+    <ul class="method-list">
+      <li><span class="method-name">auth.register(params)</span><span class="method-desc">Register a new avatar. Returns <code>{ result, isError, message }</code>.</span></li>
+      <li><span class="method-name">auth.authenticate(params)</span><span class="method-desc">Authenticate and receive a JWT token. Sets <code>oasis.token</code> automatically on success.</span></li>
+      <li><span class="method-name">auth.forgotPassword(email)</span><span class="method-desc">Send password-reset email.</span></li>
+      <li><span class="method-name">auth.resetPassword(params)</span><span class="method-desc">Reset password using the emailed token.</span></li>
+    </ul>
+
+    <h2 id="avatar-module">Avatar Module — <code>oasis.avatar</code></h2>
+    <ul class="method-list">
+      <li><span class="method-name">avatar.get(id)</span><span class="method-desc">Fetch a single avatar by ID.</span></li>
+      <li><span class="method-name">avatar.getAll()</span><span class="method-desc">Fetch all avatars. Admin only.</span></li>
+      <li><span class="method-name">avatar.update(id, params)</span><span class="method-desc">Update avatar fields.</span></li>
+      <li><span class="method-name">avatar.delete(id)</span><span class="method-desc">Soft-delete avatar. Admin only.</span></li>
+      <li><span class="method-name">avatar.search(query)</span><span class="method-desc">Search avatars by username, email or title.</span></li>
+    </ul>
+
+    <h2 id="karma-module">Karma Module — <code>oasis.karma</code></h2>
+    <ul class="method-list">
+      <li><span class="method-name">karma.addKarmaToAvatar(params)</span><span class="method-desc">Award karma. See <a href="/reference/karma">Karma API</a> for params.</span></li>
+      <li><span class="method-name">karma.removeKarmaFromAvatar(params)</span><span class="method-desc">Deduct karma.</span></li>
+      <li><span class="method-name">karma.getKarmaForAvatar(id)</span><span class="method-desc">Full karma history and total.</span></li>
+    </ul>
+
+    <h2 id="data-module">Data Module — <code>oasis.data</code></h2>
+    <ul class="method-list">
+      <li><span class="method-name">data.saveHolon(holon, providerType?)</span><span class="method-desc">Persist a holon object. Provider optional.</span></li>
+      <li><span class="method-name">data.loadHolon(id, providerType?)</span><span class="method-desc">Load a holon by ID.</span></li>
+      <li><span class="method-name">data.deleteHolon(id, providerType?)</span><span class="method-desc">Delete a holon.</span></li>
+      <li><span class="method-name">data.searchHolons(query)</span><span class="method-desc">Full-text search across holons.</span></li>
+    </ul>
+
+    <h2 id="nft-module">NFT &amp; Wallet Module — <code>oasis.nft</code></h2>
+    <ul class="method-list">
+      <li><span class="method-name">nft.mintNFT(params)</span><span class="method-desc">Mint a new NFT on the configured chain.</span></li>
+      <li><span class="method-name">nft.transferNFT(params)</span><span class="method-desc">Transfer an NFT between avatars.</span></li>
+      <li><span class="method-name">nft.getNFTsForAvatar(id)</span><span class="method-desc">List all NFTs owned by an avatar.</span></li>
+      <li><span class="method-name">nft.getBalance(id, chainType?)</span><span class="method-desc">Get wallet balance across chains.</span></li>
+    </ul>
+
+    <h2 id="map-module">Map Module — <code>oasis.map</code></h2>
+    <ul class="method-list">
+      <li><span class="method-name">map.getSpawn()</span><span class="method-desc">Get global spawn point data for Our World map.</span></li>
+      <li><span class="method-name">map.getGeoHotSpots()</span><span class="method-desc">Retrieve active geospatial hotspots.</span></li>
+      <li><span class="method-name">map.getGeoNFTs()</span><span class="method-desc">Retrieve geolocated NFTs.</span></li>
+    </ul>
+
+    <h2 id="hyperdrive-module">HyperDrive Module — <code>oasis.hyperdrive</code></h2>
+    <ul class="method-list">
+      <li><span class="method-name">hyperdrive.getProviderHealth()</span><span class="method-desc">Get health scores for all registered providers.</span></li>
+      <li><span class="method-name">hyperdrive.setDefaultProvider(providerType)</span><span class="method-desc">Change the default provider at runtime.</span></li>
+      <li><span class="method-name">hyperdrive.replicateToProvider(targetType)</span><span class="method-desc">Trigger a manual replication to a provider.</span></li>
+    </ul>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <div class="callout-title">WEB5 API</div>
+        <p><code>@oasisomniverse/web5-api</code> extends WEB4 with Celestial Spaces, GeoNFTs, holonic memory, and cosmic-scale features. See <a href="/sdks/web5-api">WEB5 SDK reference</a>.</p>
+      </div>
+    </div>
+
+    <div class="doc-nav">
+      <a href="/concepts/karma"><div class="nav-direction">← Previous</div><div class="nav-title">Karma System</div></a>
+      <a class="next" href="/sdks/web5-api"><div class="nav-direction">Next →</div><div class="nav-title">WEB5 API SDK</div></a>
+    </div>
+  </main>
+
+  <aside class="rail">
+    <div class="rail-title">On this page</div>
+    <nav class="rail-nav">
+      <a href="#install">Installation</a>
+      <a href="#init">Initialisation</a>
+      <a href="#auth-module">Auth</a>
+      <a href="#avatar-module">Avatar</a>
+      <a href="#karma-module">Karma</a>
+      <a href="#data-module">Data</a>
+      <a href="#nft-module">NFT &amp; Wallet</a>
+      <a href="#map-module">Map</a>
+      <a href="#hyperdrive-module">HyperDrive</a>
+    </nav>
+  </aside>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

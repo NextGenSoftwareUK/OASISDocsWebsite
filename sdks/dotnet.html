@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OASIS .NET SDK — OASIS Docs</title>
+<meta name="description" content="Reference for the OASIS .NET SDK — building OApps and providers in C#.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Titillium+Web:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<button class="mobile-menu-btn">&#9776;</button>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="/"><div class="sidebar-logo-icon">O</div><div class="sidebar-logo-text"><span class="site-name">OASIS DOCS</span><span class="site-sub">Developer Reference</span></div></a>
+    <div class="sidebar-search"><input type="search" placeholder="Search docs…" aria-label="Search"></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item" href="/">Home</a>
+      <a class="nav-item" href="/concepts/architecture">Architecture</a>
+      <a class="nav-item" href="/concepts/holons">Holons &amp; Data Model</a>
+      <a class="nav-item" href="/concepts/did-auth">DID Authentication</a>
+      <a class="nav-item" href="/concepts/karma">Karma System</a>
+      <div class="nav-section-title">SDK Reference</div>
+      <a class="nav-item" href="/sdks/web4-api">WEB4 API (JS)</a>
+      <a class="nav-item" href="/sdks/web5-api">WEB5 API (JS)</a>
+      <a class="nav-item active" href="/sdks/dotnet">OASIS .NET SDK</a>
+      <div class="nav-section-title">REST API</div>
+      <a class="nav-item" href="/reference/avatar">Avatar</a>
+      <a class="nav-item" href="/reference/karma">Karma</a>
+      <a class="nav-item" href="/reference/data">Data &amp; Holons</a>
+      <a class="nav-item" href="/reference/nft">NFT &amp; Wallet</a>
+      <a class="nav-item" href="/reference/search">Search</a>
+      <a class="nav-item" href="/reference/errors">Errors &amp; Codes</a>
+      <div class="nav-section-title">Provider Guides</div>
+      <a class="nav-item" href="/providers/overview">Provider Overview</a>
+      <a class="nav-item" href="/providers/holochain">Holochain / HoloNET</a>
+      <a class="nav-item" href="/providers/hyperdrive">HyperDrive</a>
+      <a class="nav-item" href="/providers/onode">ONODE Setup</a>
+      <a class="nav-item" href="/providers/ethereum">Ethereum / EVM</a>
+      <a class="nav-item" href="/providers/custom">Building a Provider</a>
+      <div class="nav-section-title">Resources</div>
+      <a class="nav-item" href="https://learn.oasisomniverse.one" target="_blank">Tutorials ↗</a>
+      <a class="nav-item" href="https://oportal.oasisomniverse.one/developer" target="_blank">Dev Portal ↗</a>
+      <a class="nav-item" href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank">GitHub ↗</a>
+      <a class="nav-item" href="/changelog">Changelog</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://oasisomniverse.one" target="_blank">oasisomniverse.one</a>
+      <a href="https://discord.gg/oasis" target="_blank">Discord Community</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="/">OASIS Docs</a><span class="breadcrumb-sep">/</span><span>SDK Reference</span><span class="breadcrumb-sep">/</span><span>.NET SDK</span></div>
+      <div class="page-meta"><span class="badge badge-reference">Reference</span><span class="badge badge-version">v4.6</span></div>
+      <h1 class="page-title">OASIS .NET SDK</h1>
+      <p class="page-desc">Build OApps, providers, and ONODE extensions directly in C# using the core OASIS kernel libraries. Targets .NET 8.</p>
+    </div>
+
+    <h2 id="packages">NuGet Packages</h2>
+    <div class="api-table-wrap"><table>
+      <thead><tr><th>Package</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>NextGenSoftware.OASIS.API.Core</code></td><td>Kernel interfaces, models, OASISResult, managers</td></tr>
+        <tr><td><code>NextGenSoftware.OASIS.API.ONode.Core</code></td><td>ONODE bootstrap, provider registration, HyperDrive</td></tr>
+        <tr><td><code>NextGenSoftware.OASIS.API.Providers.HoloOASIS</code></td><td>Holochain provider + HoloNET</td></tr>
+        <tr><td><code>NextGenSoftware.OASIS.API.Providers.EthereumOASIS</code></td><td>Ethereum / EVM provider</td></tr>
+        <tr><td><code>NextGenSoftware.OASIS.API.Providers.MongoDBOASIS</code></td><td>MongoDB provider</td></tr>
+        <tr><td><code>NextGenSoftware.OASIS.API.Providers.SQLiteOASIS</code></td><td>SQLite provider</td></tr>
+        <tr><td><code>NextGenSoftware.OASIS.STAR</code></td><td>STAR OApp runtime</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="oasisresult">OASISResult&lt;T&gt;</h2>
+    <p>All kernel and provider operations return <code>OASISResult&lt;T&gt;</code> — the .NET equivalent of the REST response envelope:</p>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">csharp</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="kw">var</span> result = <span class="kw">await</span> avatarManager.<span class="fn">SaveAvatarAsync</span>(avatar);
+
+<span class="kw">if</span> (result.IsError)
+{
+    _logger.<span class="fn">LogError</span>(result.Message);
+    <span class="kw">return</span>;
+}
+
+<span class="kw">var</span> saved = result.Result; <span class="cmt">// typed as IAvatar</span></pre>
+    </div>
+
+    <h2 id="managers">Core Managers</h2>
+    <p>The kernel exposes functionality through manager classes, accessed via the static <code>OASISBootLoader</code>:</p>
+    <div class="api-table-wrap"><table>
+      <thead><tr><th>Manager</th><th>Access via</th><th>Responsibilities</th></tr></thead>
+      <tbody>
+        <tr><td><code>AvatarManager</code></td><td><code>OASISBootLoader.OASISAPI.Avatar</code></td><td>CRUD, auth, email verification, password reset</td></tr>
+        <tr><td><code>KarmaManager</code></td><td><code>OASISBootLoader.OASISAPI.Karma</code></td><td>Award/deduct karma, Akashic Record queries</td></tr>
+        <tr><td><code>HolonManager</code></td><td><code>OASISBootLoader.OASISAPI.Data</code></td><td>Holon CRUD and search</td></tr>
+        <tr><td><code>NFTManager</code></td><td><code>OASISBootLoader.OASISAPI.NFT</code></td><td>Minting, transfer, wallet queries</td></tr>
+        <tr><td><code>MapManager</code></td><td><code>OASISBootLoader.OASISAPI.Map</code></td><td>Our World map, hotspots, GeoNFTs</td></tr>
+        <tr><td><code>SearchManager</code></td><td><code>OASISBootLoader.OASISAPI.Search</code></td><td>Cross-entity search</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="error-handling">Error Handling</h2>
+    <p>Use <code>OASISErrorHandling</code> to populate <code>OASISResult</code> from exceptions, preserving the <code>isError</code> / <code>isWarning</code> semantics through all layers:</p>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">csharp</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="kw">var</span> result = <span class="kw">new</span> <span class="cls">OASISResult</span>&lt;<span class="cls">IAvatar</span>&gt;();
+<span class="kw">try</span> {
+    result.Result = <span class="kw">await</span> _provider.<span class="fn">LoadAvatarAsync</span>(id);
+} <span class="kw">catch</span> (<span class="cls">Exception</span> ex) {
+    <span class="cls">OASISErrorHandling</span>.<span class="fn">HandleError</span>(<span class="kw">ref</span> result, ex.Message);
+}
+<span class="kw">return</span> result;</pre>
+    </div>
+
+    <div class="doc-nav">
+      <a href="/sdks/web5-api"><div class="nav-direction">← Previous</div><div class="nav-title">WEB5 API SDK</div></a>
+      <a class="next" href="/reference/avatar"><div class="nav-direction">Next →</div><div class="nav-title">Avatar REST API</div></a>
+    </div>
+  </main>
+
+  <aside class="rail">
+    <div class="rail-title">On this page</div>
+    <nav class="rail-nav">
+      <a href="#packages">NuGet Packages</a>
+      <a href="#oasisresult">OASISResult</a>
+      <a href="#managers">Core Managers</a>
+      <a href="#error-handling">Error Handling</a>
+    </nav>
+  </aside>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

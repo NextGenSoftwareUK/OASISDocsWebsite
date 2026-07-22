@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Holochain / HoloNET — OASIS Docs</title>
+<meta name="description" content="Guide to configuring and using the Holochain provider and HoloNET library in OASIS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Titillium+Web:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<button class="mobile-menu-btn">&#9776;</button>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="/"><div class="sidebar-logo-icon">O</div><div class="sidebar-logo-text"><span class="site-name">OASIS DOCS</span><span class="site-sub">Developer Reference</span></div></a>
+    <div class="sidebar-search"><input type="search" placeholder="Search docs…" aria-label="Search"></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item" href="/">Home</a>
+      <a class="nav-item" href="/concepts/architecture">Architecture</a>
+      <a class="nav-item" href="/concepts/holons">Holons &amp; Data Model</a>
+      <a class="nav-item" href="/concepts/did-auth">DID Authentication</a>
+      <a class="nav-item" href="/concepts/karma">Karma System</a>
+      <div class="nav-section-title">SDK Reference</div>
+      <a class="nav-item" href="/sdks/web4-api">WEB4 API (JS)</a>
+      <a class="nav-item" href="/sdks/web5-api">WEB5 API (JS)</a>
+      <a class="nav-item" href="/sdks/dotnet">OASIS .NET SDK</a>
+      <div class="nav-section-title">REST API</div>
+      <a class="nav-item" href="/reference/avatar">Avatar</a>
+      <a class="nav-item" href="/reference/karma">Karma</a>
+      <a class="nav-item" href="/reference/data">Data &amp; Holons</a>
+      <a class="nav-item" href="/reference/nft">NFT &amp; Wallet</a>
+      <a class="nav-item" href="/reference/search">Search</a>
+      <a class="nav-item" href="/reference/errors">Errors &amp; Codes</a>
+      <div class="nav-section-title">Provider Guides</div>
+      <a class="nav-item" href="/providers/overview">Provider Overview</a>
+      <a class="nav-item active" href="/providers/holochain">Holochain / HoloNET</a>
+      <a class="nav-item" href="/providers/hyperdrive">HyperDrive</a>
+      <a class="nav-item" href="/providers/onode">ONODE Setup</a>
+      <a class="nav-item" href="/providers/ethereum">Ethereum / EVM</a>
+      <a class="nav-item" href="/providers/custom">Building a Provider</a>
+      <div class="nav-section-title">Resources</div>
+      <a class="nav-item" href="https://learn.oasisomniverse.one" target="_blank">Tutorials ↗</a>
+      <a class="nav-item" href="https://oportal.oasisomniverse.one/developer" target="_blank">Dev Portal ↗</a>
+      <a class="nav-item" href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank">GitHub ↗</a>
+      <a class="nav-item" href="/changelog">Changelog</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://oasisomniverse.one" target="_blank">oasisomniverse.one</a>
+      <a href="https://discord.gg/oasis" target="_blank">Discord Community</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="/">OASIS Docs</a><span class="breadcrumb-sep">/</span><a href="/providers/overview">Provider Guides</a><span class="breadcrumb-sep">/</span><span>Holochain / HoloNET</span></div>
+      <div class="page-meta"><span class="badge badge-guide">Guide</span></div>
+      <h1 class="page-title">Holochain / HoloNET</h1>
+      <p class="page-desc">HoloNET is the OASIS .NET library for communicating with a Holochain conductor. The HoloOASIS provider wraps HoloNET to give the OASIS kernel full Holochain storage and retrieval.</p>
+    </div>
+
+    <h2 id="holonet-overview">HoloNET Overview</h2>
+    <p>HoloNET manages the full lifecycle of a Holochain conductor connection:</p>
+    <ul>
+      <li>Starts the conductor process automatically on first connection (if configured to do so).</li>
+      <li>Maintains a persistent WebSocket connection to the conductor's admin and app interfaces.</li>
+      <li>Handles DNA installation, cell provisioning, and agent key management.</li>
+      <li>Provides strongly-typed async/await wrappers for all zome calls.</li>
+      <li>Shuts the conductor down cleanly on disposal — no manual process management needed.</li>
+    </ul>
+
+    <div class="callout callout-note">
+      <div class="callout-icon">ℹ️</div>
+      <div class="callout-body">
+        <div class="callout-title">Conductor lifecycle is automatic</div>
+        <p>HoloNET auto-manages conductor start and shutdown. Do not attempt to start or stop the Holochain conductor process manually alongside HoloNET — they will conflict. Use the existing <code>TestHarness</code> project for integration tests.</p>
+      </div>
+    </div>
+
+    <h2 id="configuration">Configuration</h2>
+    <p>Register the HoloOASIS provider in your ONODE startup, pointing at the conductor WebSocket URI:</p>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">csharp</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="kw">var</span> holoProvider = <span class="kw">new</span> <span class="cls">HoloOASIS</span>(
+    holochainConductorUri: <span class="str">"ws://localhost:8888"</span>,
+    holochainVersion:      <span class="cls">HolochainVersion</span>.RSM
+);
+OASISBootLoader.<span class="fn">RegisterProvider</span>(holoProvider);</pre>
+    </div>
+
+    <p>In <code>OASISDNA.json</code>:</p>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">json</span><button class="copy-btn">Copy</button></div>
+      <pre>{
+  <span class="str">"HoloOASIS"</span>: {
+    <span class="str">"HolochainConductorURI"</span>: <span class="str">"ws://localhost:8888"</span>,
+    <span class="str">"HolochainVersion"</span>:      <span class="str">"RSM"</span>,
+    <span class="str">"AutoStartConductor"</span>:    <span class="kw">true</span>,
+    <span class="str">"HappPath"</span>:              <span class="str">"./happs/oasis.happ"</span>
+  }
+}</pre>
+    </div>
+
+    <h2 id="zome-calls">Making Zome Calls</h2>
+    <p>HoloNET exposes zome calls as strongly-typed async methods. You can call zomes directly from C# without going through the OASIS REST API:</p>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">csharp</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="kw">var</span> result = <span class="kw">await</span> holoNET.<span class="fn">CallZomeFunctionAsync</span>(
+    zomeName:         <span class="str">"oasis"</span>,
+    zomeFunctionName: <span class="str">"save_avatar"</span>,
+    paramsObject:     avatarEntry
+);
+
+<span class="kw">if</span> (result.IsError)
+    <span class="kw">throw new</span> <span class="cls">Exception</span>(result.Message);</pre>
+    </div>
+
+    <h2 id="dna">DNA Configuration</h2>
+    <p>The OASIS Holochain DNA (<code>oasis.happ</code>) ships with the OASIS2 repo under <code>NextGenSoftware.OASIS.API.Providers.HoloOASIS/hApps/</code>. It defines the following zomes:</p>
+    <ul>
+      <li><code>oasis</code> — avatar, holon, karma CRUD</li>
+      <li><code>oasis_search</code> — full-text and field index search</li>
+      <li><code>oasis_links</code> — holonic parent/child relationship management</li>
+    </ul>
+
+    <h2 id="testing">Integration Testing</h2>
+    <p>Use the <code>NextGenSoftware.OASIS.API.Providers.HoloOASIS.TestHarness</code> project for live conductor tests. It handles conductor startup, DNA installation, and teardown automatically — no manual setup required.</p>
+    <div class="code-block terminal-block">
+      <div class="code-block-header"><span class="code-lang">terminal</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cmd">cd NextGenSoftware.OASIS.API.Providers.HoloOASIS.TestHarness</span>
+<span class="cmd">dotnet run</span></pre>
+    </div>
+
+    <div class="doc-nav">
+      <a href="/providers/overview"><div class="nav-direction">← Previous</div><div class="nav-title">Provider Overview</div></a>
+      <a class="next" href="/providers/hyperdrive"><div class="nav-direction">Next →</div><div class="nav-title">HyperDrive</div></a>
+    </div>
+  </main>
+
+  <aside class="rail">
+    <div class="rail-title">On this page</div>
+    <nav class="rail-nav">
+      <a href="#holonet-overview">HoloNET Overview</a>
+      <a href="#configuration">Configuration</a>
+      <a href="#zome-calls">Zome Calls</a>
+      <a href="#dna">DNA Configuration</a>
+      <a href="#testing">Integration Testing</a>
+    </nav>
+  </aside>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

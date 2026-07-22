@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search API — OASIS Docs</title>
+<meta name="description" content="Reference for the OASIS Search REST API — full-text search across avatars, holons and all platform data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Titillium+Web:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<button class="mobile-menu-btn">&#9776;</button>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="/"><div class="sidebar-logo-icon">O</div><div class="sidebar-logo-text"><span class="site-name">OASIS DOCS</span><span class="site-sub">Developer Reference</span></div></a>
+    <div class="sidebar-search"><input type="search" placeholder="Search docs…" aria-label="Search"></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item" href="/">Home</a>
+      <a class="nav-item" href="/concepts/architecture">Architecture</a>
+      <a class="nav-item" href="/concepts/holons">Holons &amp; Data Model</a>
+      <a class="nav-item" href="/concepts/did-auth">DID Authentication</a>
+      <a class="nav-item" href="/concepts/karma">Karma System</a>
+      <div class="nav-section-title">SDK Reference</div>
+      <a class="nav-item" href="/sdks/web4-api">WEB4 API (JS)</a>
+      <a class="nav-item" href="/sdks/web5-api">WEB5 API (JS)</a>
+      <a class="nav-item" href="/sdks/dotnet">OASIS .NET SDK</a>
+      <div class="nav-section-title">REST API</div>
+      <a class="nav-item" href="/reference/avatar">Avatar</a>
+      <a class="nav-item" href="/reference/karma">Karma</a>
+      <a class="nav-item" href="/reference/data">Data &amp; Holons</a>
+      <a class="nav-item" href="/reference/nft">NFT &amp; Wallet</a>
+      <a class="nav-item active" href="/reference/search">Search</a>
+      <a class="nav-item" href="/reference/errors">Errors &amp; Codes</a>
+      <div class="nav-section-title">Provider Guides</div>
+      <a class="nav-item" href="/providers/overview">Provider Overview</a>
+      <a class="nav-item" href="/providers/holochain">Holochain / HoloNET</a>
+      <a class="nav-item" href="/providers/hyperdrive">HyperDrive</a>
+      <a class="nav-item" href="/providers/onode">ONODE Setup</a>
+      <a class="nav-item" href="/providers/ethereum">Ethereum / EVM</a>
+      <a class="nav-item" href="/providers/custom">Building a Provider</a>
+      <div class="nav-section-title">Resources</div>
+      <a class="nav-item" href="https://learn.oasisomniverse.one" target="_blank">Tutorials ↗</a>
+      <a class="nav-item" href="https://oportal.oasisomniverse.one/developer" target="_blank">Dev Portal ↗</a>
+      <a class="nav-item" href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank">GitHub ↗</a>
+      <a class="nav-item" href="/changelog">Changelog</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://oasisomniverse.one" target="_blank">oasisomniverse.one</a>
+      <a href="https://discord.gg/oasis" target="_blank">Discord Community</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="/">OASIS Docs</a><span class="breadcrumb-sep">/</span><a href="/reference/search">REST API</a><span class="breadcrumb-sep">/</span><span>Search</span></div>
+      <div class="page-meta"><span class="badge badge-reference">Reference</span><span class="badge badge-version">v4.6</span></div>
+      <h1 class="page-title">Search API</h1>
+      <p class="page-desc">Full-text and field-filtered search across avatars, holons, NFTs, quests, and all OASIS platform data.</p>
+    </div>
+
+    <h2 id="search-all">Search All</h2>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/search/{searchTerm}</span></div>
+    <p>Global full-text search across all entity types. Returns grouped results by type.</p>
+    <h3>Response <code>result</code></h3>
+    <div class="api-table-wrap"><table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>avatars</code></td><td>array</td><td>Matching avatar records</td></tr>
+        <tr><td><code>holons</code></td><td>array</td><td>Matching holon records</td></tr>
+        <tr><td><code>nfts</code></td><td>array</td><td>Matching NFTs</td></tr>
+        <tr><td><code>quests</code></td><td>array</td><td>Matching quests</td></tr>
+        <tr><td><code>missions</code></td><td>array</td><td>Matching missions</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="search-avatars">Search Avatars</h2>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/avatar/search/{searchTerm}</span></div>
+    <p>Searches avatar <code>username</code>, <code>email</code>, <code>title</code>, and <code>description</code> fields.</p>
+
+    <h2 id="search-holons">Search Holons</h2>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/data/SearchHolons/{searchTerm}</span></div>
+    <p>Searches holon <code>name</code>, <code>description</code>, and <code>metaData</code> fields.</p>
+
+    <div class="callout callout-note">
+      <div class="callout-icon">ℹ️</div>
+      <div class="callout-body">
+        <div class="callout-title">Provider search support</div>
+        <p>Search depth depends on the active provider. MongoDB and Neo4j providers support rich text indexing. Holochain provider search is limited to exact-match on indexed fields. HyperDrive will fan the search out to all providers and merge results when configured to do so.</p>
+      </div>
+    </div>
+
+    <div class="doc-nav">
+      <a href="/reference/nft"><div class="nav-direction">← Previous</div><div class="nav-title">NFT &amp; Wallet API</div></a>
+      <a class="next" href="/reference/errors"><div class="nav-direction">Next →</div><div class="nav-title">Errors &amp; Codes</div></a>
+    </div>
+  </main>
+
+  <aside class="rail">
+    <div class="rail-title">On this page</div>
+    <nav class="rail-nav">
+      <a href="#search-all">Search All</a>
+      <a href="#search-avatars">Search Avatars</a>
+      <a href="#search-holons">Search Holons</a>
+    </nav>
+  </aside>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

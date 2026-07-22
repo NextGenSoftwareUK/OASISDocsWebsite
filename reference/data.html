@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data &amp; Holons API — OASIS Docs</title>
+<meta name="description" content="Reference for the OASIS Data and Holons REST API — store and retrieve arbitrary holonic data across any provider.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Titillium+Web:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<button class="mobile-menu-btn">&#9776;</button>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="/"><div class="sidebar-logo-icon">O</div><div class="sidebar-logo-text"><span class="site-name">OASIS DOCS</span><span class="site-sub">Developer Reference</span></div></a>
+    <div class="sidebar-search"><input type="search" placeholder="Search docs…" aria-label="Search"></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item" href="/">Home</a>
+      <a class="nav-item" href="/concepts/architecture">Architecture</a>
+      <a class="nav-item" href="/concepts/holons">Holons &amp; Data Model</a>
+      <a class="nav-item" href="/concepts/did-auth">DID Authentication</a>
+      <a class="nav-item" href="/concepts/karma">Karma System</a>
+      <div class="nav-section-title">SDK Reference</div>
+      <a class="nav-item" href="/sdks/web4-api">WEB4 API (JS)</a>
+      <a class="nav-item" href="/sdks/web5-api">WEB5 API (JS)</a>
+      <a class="nav-item" href="/sdks/dotnet">OASIS .NET SDK</a>
+      <div class="nav-section-title">REST API</div>
+      <a class="nav-item" href="/reference/avatar">Avatar</a>
+      <a class="nav-item" href="/reference/karma">Karma</a>
+      <a class="nav-item active" href="/reference/data">Data &amp; Holons</a>
+      <a class="nav-item" href="/reference/nft">NFT &amp; Wallet</a>
+      <a class="nav-item" href="/reference/search">Search</a>
+      <a class="nav-item" href="/reference/errors">Errors &amp; Codes</a>
+      <div class="nav-section-title">Provider Guides</div>
+      <a class="nav-item" href="/providers/overview">Provider Overview</a>
+      <a class="nav-item" href="/providers/holochain">Holochain / HoloNET</a>
+      <a class="nav-item" href="/providers/hyperdrive">HyperDrive</a>
+      <a class="nav-item" href="/providers/onode">ONODE Setup</a>
+      <a class="nav-item" href="/providers/ethereum">Ethereum / EVM</a>
+      <a class="nav-item" href="/providers/custom">Building a Provider</a>
+      <div class="nav-section-title">Resources</div>
+      <a class="nav-item" href="https://learn.oasisomniverse.one" target="_blank">Tutorials ↗</a>
+      <a class="nav-item" href="https://oportal.oasisomniverse.one/developer" target="_blank">Dev Portal ↗</a>
+      <a class="nav-item" href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank">GitHub ↗</a>
+      <a class="nav-item" href="/changelog">Changelog</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://oasisomniverse.one" target="_blank">oasisomniverse.one</a>
+      <a href="https://discord.gg/oasis" target="_blank">Discord Community</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="/">OASIS Docs</a><span class="breadcrumb-sep">/</span><a href="/reference/data">REST API</a><span class="breadcrumb-sep">/</span><span>Data &amp; Holons</span></div>
+      <div class="page-meta"><span class="badge badge-reference">Reference</span><span class="badge badge-version">v4.6</span></div>
+      <h1 class="page-title">Data &amp; Holons API</h1>
+      <p class="page-desc">Store, load, and search arbitrary structured data as Holons — the fundamental data unit of OASIS. Holons are provider-agnostic: the same API writes to Holochain, MongoDB, IPFS, or any other registered provider.</p>
+    </div>
+
+    <div class="callout callout-note">
+      <div class="callout-icon">ℹ️</div>
+      <div class="callout-body">
+        <div class="callout-title">What is a Holon?</div>
+        <p>A Holon is a self-contained data object with an ID, type, metadata, and an arbitrary key-value property bag. See <a href="/concepts/holons">Holons &amp; Data Model</a> for the full conceptual overview.</p>
+      </div>
+    </div>
+
+    <h2 id="save-holon">Save Holon</h2>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/data/SaveHolon</span></div>
+    <p>Persists a holon. Creates a new record if no <code>id</code> is provided; updates the existing record if <code>id</code> is present.</p>
+
+    <h3>Request body</h3>
+    <div class="api-table-wrap"><table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>holon</code><span class="required-badge">required</span></td><td>object</td><td>The Holon object to persist (see schema below)</td></tr>
+        <tr><td><code>providerType</code></td><td>string</td><td>Override the default provider for this write</td></tr>
+        <tr><td><code>setGlobally</code></td><td>boolean</td><td>If true, also sets as the global default provider</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Holon schema</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">json</span><button class="copy-btn">Copy</button></div>
+      <pre>{
+  <span class="str">"id"</span>:          <span class="str">"3fa85f64-…"</span>,   <span class="cmt">// omit to auto-generate</span>
+  <span class="str">"name"</span>:        <span class="str">"My Holon"</span>,
+  <span class="str">"description"</span>: <span class="str">"…"</span>,
+  <span class="str">"holonType"</span>:   <span class="str">"Custom"</span>,
+  <span class="str">"metaData"</span>:    { <span class="str">"key"</span>: <span class="str">"value"</span> },
+  <span class="str">"createdByAvatarId"</span>: <span class="str">"…"</span>,
+  <span class="str">"parentHolonId"</span>:     <span class="str">"…"</span>   <span class="cmt">// optional — nests inside a parent holon</span>
+}</pre>
+    </div>
+
+    <h2 id="load-holon">Load Holon</h2>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/data/LoadHolon/{id}</span></div>
+    <p>Loads a single holon by its GUID. Optionally pass <code>?providerType=HoloOASIS</code> to target a specific provider.</p>
+
+    <h2 id="load-all-holons">Load All Holons</h2>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/data/LoadAllHolons</span></div>
+    <p>Returns all holons across the default provider. For large datasets, use Search with filters instead.</p>
+
+    <h2 id="load-holons-for-parent">Load Holons for Parent</h2>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/data/LoadHolonsForParent/{parentId}</span></div>
+    <p>Returns all child holons nested under the given parent holon ID.</p>
+
+    <h2 id="delete-holon">Delete Holon</h2>
+    <div class="endpoint"><span class="method method-delete">DELETE</span><span class="endpoint-path">/data/DeleteHolon/{id}</span></div>
+    <p>Soft-deletes the holon. Pass <code>?hardDelete=true</code> to permanently remove (Admin only).</p>
+
+    <h2 id="save-holons">Save Multiple Holons</h2>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/data/SaveHolons</span></div>
+    <p>Batch-saves an array of holons in a single request. Body: <code>{ "holons": […], "providerType": "…" }</code>. Returns an array of saved holons with their assigned IDs.</p>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <div class="callout-title">OApp data storage pattern</div>
+        <p>Store each OApp's game objects, levels, and player state as holons with a shared <code>parentHolonId</code> representing the OApp itself. This makes it trivial to load all data for a given OApp and to migrate it between providers via HyperDrive.</p>
+      </div>
+    </div>
+
+    <div class="doc-nav">
+      <a href="/reference/karma"><div class="nav-direction">← Previous</div><div class="nav-title">Karma API</div></a>
+      <a class="next" href="/reference/nft"><div class="nav-direction">Next →</div><div class="nav-title">NFT &amp; Wallet API</div></a>
+    </div>
+  </main>
+
+  <aside class="rail">
+    <div class="rail-title">On this page</div>
+    <nav class="rail-nav">
+      <a href="#save-holon">Save Holon</a>
+      <a href="#load-holon">Load Holon</a>
+      <a href="#load-all-holons">Load All Holons</a>
+      <a href="#load-holons-for-parent">Load for Parent</a>
+      <a href="#delete-holon">Delete Holon</a>
+      <a href="#save-holons">Save Multiple</a>
+    </nav>
+  </aside>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

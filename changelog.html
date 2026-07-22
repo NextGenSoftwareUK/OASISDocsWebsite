@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Changelog — OASIS Docs</title>
+<meta name="description" content="OASIS platform changelog — API versions, SDK releases, and breaking changes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Titillium+Web:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .changelog-entry {
+    border-left: 2px solid var(--border);
+    padding-left: 24px;
+    margin-bottom: 48px;
+    position: relative;
+  }
+  .changelog-entry::before {
+    content: '';
+    position: absolute;
+    left: -5px; top: 8px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .changelog-version {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .changelog-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+  .change-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .change-new      { background: rgba(16,185,129,0.15); color: var(--green);  border: 1px solid rgba(16,185,129,0.3); }
+  .change-fix      { background: rgba(0,212,255,0.12);  color: var(--accent); border: 1px solid rgba(0,212,255,0.3); }
+  .change-breaking { background: rgba(239,68,68,0.12);  color: var(--red);    border: 1px solid rgba(239,68,68,0.3); }
+  .change-improved { background: rgba(124,58,237,0.12); color: #a78bfa;       border: 1px solid rgba(124,58,237,0.3); }
+  .changelog-entry ul { margin-top: 12px; }
+</style>
+</head>
+<body>
+<button class="mobile-menu-btn">&#9776;</button>
+<div class="layout layout-no-rail">
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="/"><div class="sidebar-logo-icon">O</div><div class="sidebar-logo-text"><span class="site-name">OASIS DOCS</span><span class="site-sub">Developer Reference</span></div></a>
+    <div class="sidebar-search"><input type="search" placeholder="Search docs…" aria-label="Search"></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item" href="/">Home</a>
+      <a class="nav-item" href="/concepts/architecture">Architecture</a>
+      <a class="nav-item" href="/concepts/holons">Holons &amp; Data Model</a>
+      <a class="nav-item" href="/concepts/did-auth">DID Authentication</a>
+      <a class="nav-item" href="/concepts/karma">Karma System</a>
+      <div class="nav-section-title">SDK Reference</div>
+      <a class="nav-item" href="/sdks/web4-api">WEB4 API (JS)</a>
+      <a class="nav-item" href="/sdks/web5-api">WEB5 API (JS)</a>
+      <a class="nav-item" href="/sdks/dotnet">OASIS .NET SDK</a>
+      <div class="nav-section-title">REST API</div>
+      <a class="nav-item" href="/reference/avatar">Avatar</a>
+      <a class="nav-item" href="/reference/karma">Karma</a>
+      <a class="nav-item" href="/reference/data">Data &amp; Holons</a>
+      <a class="nav-item" href="/reference/nft">NFT &amp; Wallet</a>
+      <a class="nav-item" href="/reference/search">Search</a>
+      <a class="nav-item" href="/reference/errors">Errors &amp; Codes</a>
+      <div class="nav-section-title">Provider Guides</div>
+      <a class="nav-item" href="/providers/overview">Provider Overview</a>
+      <a class="nav-item" href="/providers/holochain">Holochain / HoloNET</a>
+      <a class="nav-item" href="/providers/hyperdrive">HyperDrive</a>
+      <a class="nav-item" href="/providers/onode">ONODE Setup</a>
+      <a class="nav-item" href="/providers/ethereum">Ethereum / EVM</a>
+      <a class="nav-item" href="/providers/custom">Building a Provider</a>
+      <div class="nav-section-title">Resources</div>
+      <a class="nav-item" href="https://learn.oasisomniverse.one" target="_blank">Tutorials ↗</a>
+      <a class="nav-item" href="https://oportal.oasisomniverse.one/developer" target="_blank">Dev Portal ↗</a>
+      <a class="nav-item" href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank">GitHub ↗</a>
+      <a class="nav-item active" href="/changelog">Changelog</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://oasisomniverse.one" target="_blank">oasisomniverse.one</a>
+      <a href="https://discord.gg/oasis" target="_blank">Discord Community</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="/">OASIS Docs</a><span class="breadcrumb-sep">/</span><span>Changelog</span></div>
+      <h1 class="page-title">Changelog</h1>
+      <p class="page-desc">API versions, SDK releases, provider updates, and breaking changes. All dates are UTC.</p>
+    </div>
+
+    <div class="changelog-entry">
+      <div class="changelog-version">v4.6.0</div>
+      <div class="changelog-date">2026 — Current</div>
+      <ul>
+        <li><span class="change-fix">FIX</span> <code>Guid.TryParse</code> duplicate variable names in <code>DataHelper</code> (AvatarDetail + Holon conversions)</li>
+        <li><span class="change-fix">FIX</span> Username/email sync: early return on conflict prevents partial saves</li>
+        <li><span class="change-fix">FIX</span> Avatar→AvatarDetail sync added to <code>SaveAvatarAsync</code></li>
+        <li><span class="change-fix">FIX</span> Username/email uniqueness: <code>HandleError</code> (not <code>HandleWarning</code>) so portal receives <code>isError: true</code></li>
+        <li><span class="change-improved">IMPROVED</span> ONET node join now warns when DID auth is enabled but nonce store is not Redis</li>
+        <li><span class="change-improved">IMPROVED</span> Removed redundant provider projects from solution</li>
+      </ul>
+    </div>
+
+    <div class="changelog-entry">
+      <div class="changelog-version">v4.5.0</div>
+      <div class="changelog-date">2025</div>
+      <ul>
+        <li><span class="change-new">NEW</span> DID authentication support for ONET node joining</li>
+        <li><span class="change-new">NEW</span> Redis nonce store for multi-node DID auth</li>
+        <li><span class="change-new">NEW</span> SolanaOASIS provider</li>
+        <li><span class="change-new">NEW</span> HyperDrive load balancing mode</li>
+        <li><span class="change-improved">IMPROVED</span> Provider health score algorithm — now uses exponential moving average</li>
+        <li><span class="change-improved">IMPROVED</span> <code>@oasisomniverse/web5-api</code> — GeoNFT proximity-claim server-side validation</li>
+        <li><span class="change-fix">FIX</span> HoloNET conductor auto-start race condition on first connection</li>
+      </ul>
+    </div>
+
+    <div class="changelog-entry">
+      <div class="changelog-version">v4.0.0</div>
+      <div class="changelog-date">2024</div>
+      <ul>
+        <li><span class="change-new">NEW</span> WEB5 API surface — Celestial Spaces, GeoNFTs, holonic memory, cosmic layer</li>
+        <li><span class="change-new">NEW</span> <code>@oasisomniverse/web5-api</code> npm package</li>
+        <li><span class="change-new">NEW</span> ThreefoldOASIS provider</li>
+        <li><span class="change-new">NEW</span> STAR runtime OApp lifecycle management</li>
+        <li><span class="change-breaking">BREAKING</span> Avatar <code>id</code> field renamed to <code>avatarId</code> in REST responses — update all client reads</li>
+        <li><span class="change-breaking">BREAKING</span> Karma endpoint paths changed from <code>/karma/*</code> to <code>/avatar/AddKarmaToAvatar</code> pattern</li>
+        <li><span class="change-improved">IMPROVED</span> HyperDrive replication is now fully async — no write latency impact</li>
+      </ul>
+    </div>
+
+    <div class="changelog-entry">
+      <div class="changelog-version">v3.x</div>
+      <div class="changelog-date">2022 – 2023</div>
+      <ul>
+        <li><span class="change-new">NEW</span> HyperDrive distributed failover engine</li>
+        <li><span class="change-new">NEW</span> EthereumOASIS, IPFSOASIS, Neo4jOASIS providers</li>
+        <li><span class="change-new">NEW</span> WEB4 JS SDK (<code>@oasisomniverse/web4-api</code>)</li>
+        <li><span class="change-new">NEW</span> JWT authentication replacing session cookies</li>
+        <li><span class="change-new">NEW</span> Holons data model replacing flat key-value storage</li>
+      </ul>
+    </div>
+
+  </main>
+</div>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

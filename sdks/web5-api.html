@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WEB5 JS SDK — OASIS Docs</title>
+<meta name="description" content="Module reference for the @oasisomniverse/web5-api JavaScript SDK — extends WEB4 with spatial, cosmic, and holonic memory capabilities.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Titillium+Web:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<button class="mobile-menu-btn">&#9776;</button>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="/"><div class="sidebar-logo-icon">O</div><div class="sidebar-logo-text"><span class="site-name">OASIS DOCS</span><span class="site-sub">Developer Reference</span></div></a>
+    <div class="sidebar-search"><input type="search" placeholder="Search docs…" aria-label="Search"></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item" href="/">Home</a>
+      <a class="nav-item" href="/concepts/architecture">Architecture</a>
+      <a class="nav-item" href="/concepts/holons">Holons &amp; Data Model</a>
+      <a class="nav-item" href="/concepts/did-auth">DID Authentication</a>
+      <a class="nav-item" href="/concepts/karma">Karma System</a>
+      <div class="nav-section-title">SDK Reference</div>
+      <a class="nav-item" href="/sdks/web4-api">WEB4 API (JS)</a>
+      <a class="nav-item active" href="/sdks/web5-api">WEB5 API (JS)</a>
+      <a class="nav-item" href="/sdks/dotnet">OASIS .NET SDK</a>
+      <div class="nav-section-title">REST API</div>
+      <a class="nav-item" href="/reference/avatar">Avatar</a>
+      <a class="nav-item" href="/reference/karma">Karma</a>
+      <a class="nav-item" href="/reference/data">Data &amp; Holons</a>
+      <a class="nav-item" href="/reference/nft">NFT &amp; Wallet</a>
+      <a class="nav-item" href="/reference/search">Search</a>
+      <a class="nav-item" href="/reference/errors">Errors &amp; Codes</a>
+      <div class="nav-section-title">Provider Guides</div>
+      <a class="nav-item" href="/providers/overview">Provider Overview</a>
+      <a class="nav-item" href="/providers/holochain">Holochain / HoloNET</a>
+      <a class="nav-item" href="/providers/hyperdrive">HyperDrive</a>
+      <a class="nav-item" href="/providers/onode">ONODE Setup</a>
+      <a class="nav-item" href="/providers/ethereum">Ethereum / EVM</a>
+      <a class="nav-item" href="/providers/custom">Building a Provider</a>
+      <div class="nav-section-title">Resources</div>
+      <a class="nav-item" href="https://learn.oasisomniverse.one" target="_blank">Tutorials ↗</a>
+      <a class="nav-item" href="https://oportal.oasisomniverse.one/developer" target="_blank">Dev Portal ↗</a>
+      <a class="nav-item" href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank">GitHub ↗</a>
+      <a class="nav-item" href="/changelog">Changelog</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://oasisomniverse.one" target="_blank">oasisomniverse.one</a>
+      <a href="https://discord.gg/oasis" target="_blank">Discord Community</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="/">OASIS Docs</a><span class="breadcrumb-sep">/</span><span>SDK Reference</span><span class="breadcrumb-sep">/</span><span>WEB5 API</span></div>
+      <div class="page-meta"><span class="badge badge-reference">Reference</span><span class="badge badge-version">v5.0</span></div>
+      <h1 class="page-title">WEB5 JS SDK</h1>
+      <p class="page-desc"><code>@oasisomniverse/web5-api</code> extends WEB4 with Celestial Spaces, GeoNFTs, holonic memory, and Web6/FAHRN agent capabilities. All WEB4 modules are included — install WEB5 instead of WEB4 for access to both.</p>
+    </div>
+
+    <h2 id="install">Installation</h2>
+    <div class="code-block terminal-block">
+      <div class="code-block-header"><span class="code-lang">terminal</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cmd">npm install @oasisomniverse/web5-api</span></pre>
+    </div>
+
+    <div class="callout callout-note">
+      <div class="callout-icon">ℹ️</div>
+      <div class="callout-body">
+        <div class="callout-title">WEB5 includes all WEB4 modules</div>
+        <p>You do not need to install both packages. <code>@oasisomniverse/web5-api</code> re-exports everything from <code>@oasisomniverse/web4-api</code>. Initialise identically — the extra modules are available on the same <code>oasis</code> instance.</p>
+      </div>
+    </div>
+
+    <h2 id="celestial">Celestial Bodies — <code>oasis.celestialBodies</code></h2>
+    <ul class="method-list">
+      <li><span class="method-name">celestialBodies.getSolarSystem()</span><span class="method-desc">Full Our World solar system data with all planets and moons.</span></li>
+      <li><span class="method-name">celestialBodies.getPlanet(id)</span><span class="method-desc">Single planet detail.</span></li>
+      <li><span class="method-name">celestialBodies.getMoon(id)</span><span class="method-desc">Single moon detail.</span></li>
+      <li><span class="method-name">celestialBodies.saveCelestialBody(body)</span><span class="method-desc">Persist a celestial body. Admin / OApp developer only.</span></li>
+    </ul>
+
+    <h2 id="celestial-spaces">Celestial Spaces — <code>oasis.celestialSpaces</code></h2>
+    <ul class="method-list">
+      <li><span class="method-name">celestialSpaces.getAll()</span><span class="method-desc">All registered spatial regions.</span></li>
+      <li><span class="method-name">celestialSpaces.get(id)</span><span class="method-desc">Single space by ID.</span></li>
+      <li><span class="method-name">celestialSpaces.save(space)</span><span class="method-desc">Create or update a celestial space.</span></li>
+      <li><span class="method-name">celestialSpaces.getAvatarsInSpace(spaceId)</span><span class="method-desc">All avatars currently in the given space.</span></li>
+    </ul>
+
+    <h2 id="geonft">GeoNFTs — <code>oasis.geoNFTs</code></h2>
+    <ul class="method-list">
+      <li><span class="method-name">geoNFTs.getAll()</span><span class="method-desc">All geolocated NFTs in the world.</span></li>
+      <li><span class="method-name">geoNFTs.getNear(lat, lng, radiusKm)</span><span class="method-desc">GeoNFTs within a radius of a GPS coordinate.</span></li>
+      <li><span class="method-name">geoNFTs.mint(params)</span><span class="method-desc">Mint a new GeoNFT at a latitude/longitude.</span></li>
+      <li><span class="method-name">geoNFTs.claim(id, avatarId)</span><span class="method-desc">Avatar claims a GeoNFT (proximity check enforced server-side).</span></li>
+    </ul>
+
+    <h2 id="holonic-memory">Holonic Memory — <code>oasis.holonicMemory</code></h2>
+    <ul class="method-list">
+      <li><span class="method-name">holonicMemory.remember(key, value, avatarId)</span><span class="method-desc">Store a named memory for an avatar — persists across sessions and devices.</span></li>
+      <li><span class="method-name">holonicMemory.recall(key, avatarId)</span><span class="method-desc">Retrieve a stored memory by key.</span></li>
+      <li><span class="method-name">holonicMemory.forget(key, avatarId)</span><span class="method-desc">Delete a memory.</span></li>
+      <li><span class="method-name">holonicMemory.recallAll(avatarId)</span><span class="method-desc">All memories for an avatar.</span></li>
+    </ul>
+
+    <h2 id="cosmic">Cosmic Layer — <code>oasis.cosmic</code></h2>
+    <p>The cosmic layer provides access to the macro-scale OASIS universe — galactic structures, star clusters, and deep-space zones beyond the solar system.</p>
+    <ul class="method-list">
+      <li><span class="method-name">cosmic.getGalaxy(id)</span><span class="method-desc">Galaxy structure and child star systems.</span></li>
+      <li><span class="method-name">cosmic.getSuperCluster(id)</span><span class="method-desc">Super-cluster of galaxies.</span></li>
+      <li><span class="method-name">cosmic.getMultiverse()</span><span class="method-desc">The full OASIS multiverse map.</span></li>
+    </ul>
+
+    <div class="doc-nav">
+      <a href="/sdks/web4-api"><div class="nav-direction">← Previous</div><div class="nav-title">WEB4 API SDK</div></a>
+      <a class="next" href="/sdks/dotnet"><div class="nav-direction">Next →</div><div class="nav-title">OASIS .NET SDK</div></a>
+    </div>
+  </main>
+
+  <aside class="rail">
+    <div class="rail-title">On this page</div>
+    <nav class="rail-nav">
+      <a href="#install">Installation</a>
+      <a href="#celestial">Celestial Bodies</a>
+      <a href="#celestial-spaces">Celestial Spaces</a>
+      <a href="#geonft">GeoNFTs</a>
+      <a href="#holonic-memory">Holonic Memory</a>
+      <a href="#cosmic">Cosmic Layer</a>
+    </nav>
+  </aside>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

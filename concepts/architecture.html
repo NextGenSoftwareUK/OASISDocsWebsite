@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture — OASIS Docs</title>
+<meta name="description" content="How the OASIS kernel, providers, ONODE, STAR runtime, and HyperDrive fit together.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Titillium+Web:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<button class="mobile-menu-btn">&#9776;</button>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="/"><div class="sidebar-logo-icon">O</div><div class="sidebar-logo-text"><span class="site-name">OASIS DOCS</span><span class="site-sub">Developer Reference</span></div></a>
+    <div class="sidebar-search"><input type="search" placeholder="Search docs…" aria-label="Search"></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item" href="/">Home</a>
+      <a class="nav-item active" href="/concepts/architecture">Architecture</a>
+      <a class="nav-item" href="/concepts/holons">Holons &amp; Data Model</a>
+      <a class="nav-item" href="/concepts/did-auth">DID Authentication</a>
+      <a class="nav-item" href="/concepts/karma">Karma System</a>
+      <div class="nav-section-title">SDK Reference</div>
+      <a class="nav-item" href="/sdks/web4-api">WEB4 API (JS)</a>
+      <a class="nav-item" href="/sdks/web5-api">WEB5 API (JS)</a>
+      <a class="nav-item" href="/sdks/dotnet">OASIS .NET SDK</a>
+      <div class="nav-section-title">REST API</div>
+      <a class="nav-item" href="/reference/avatar">Avatar</a>
+      <a class="nav-item" href="/reference/karma">Karma</a>
+      <a class="nav-item" href="/reference/data">Data &amp; Holons</a>
+      <a class="nav-item" href="/reference/nft">NFT &amp; Wallet</a>
+      <a class="nav-item" href="/reference/search">Search</a>
+      <a class="nav-item" href="/reference/errors">Errors &amp; Codes</a>
+      <div class="nav-section-title">Provider Guides</div>
+      <a class="nav-item" href="/providers/overview">Provider Overview</a>
+      <a class="nav-item" href="/providers/holochain">Holochain / HoloNET</a>
+      <a class="nav-item" href="/providers/hyperdrive">HyperDrive</a>
+      <a class="nav-item" href="/providers/onode">ONODE Setup</a>
+      <a class="nav-item" href="/providers/ethereum">Ethereum / EVM</a>
+      <a class="nav-item" href="/providers/custom">Building a Provider</a>
+      <div class="nav-section-title">Resources</div>
+      <a class="nav-item" href="https://learn.oasisomniverse.one" target="_blank">Tutorials ↗</a>
+      <a class="nav-item" href="https://oportal.oasisomniverse.one/developer" target="_blank">Dev Portal ↗</a>
+      <a class="nav-item" href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank">GitHub ↗</a>
+      <a class="nav-item" href="/changelog">Changelog</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://oasisomniverse.one" target="_blank">oasisomniverse.one</a>
+      <a href="https://discord.gg/oasis" target="_blank">Discord Community</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="/">OASIS Docs</a><span class="breadcrumb-sep">/</span><span>Architecture</span></div>
+      <div class="page-meta"><span class="badge badge-concept">Concept</span></div>
+      <h1 class="page-title">Architecture Overview</h1>
+      <p class="page-desc">How the OASIS kernel, provider layer, ONODE, STAR runtime, and HyperDrive compose into a decentralised Web4/Web5 platform.</p>
+    </div>
+
+    <h2 id="layers">The Four Layers</h2>
+    <p>OASIS is structured as four cooperating layers, each independently replaceable:</p>
+    <div class="api-table-wrap"><table>
+      <thead><tr><th>Layer</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><strong>OASIS Kernel</strong></td><td>Core business logic: avatar management, karma, holons, quests, missions. Lives in <code>NextGenSoftware.OASIS.API.Core</code>.</td></tr>
+        <tr><td><strong>Provider Layer</strong></td><td>Pluggable storage and network backends. Each provider implements the <code>IOASISProvider</code> interface. Holochain, Ethereum, IPFS, MongoDB, SQLite, and more ship by default.</td></tr>
+        <tr><td><strong>ONODE / WebAPI</strong></td><td>ASP.NET Core host that exposes the kernel via REST. Manages provider registration, DID auth, JWT issuance, and HyperDrive failover.</td></tr>
+        <tr><td><strong>STAR Runtime</strong></td><td>OApp lifecycle engine — compile, deploy, version, and run OApps against a live ONODE.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="provider-model">Provider Model</h2>
+    <p>The provider model is the key architectural idea. The kernel never calls a storage technology directly — it calls an <code>IOASISProvider</code>. This means:</p>
+    <ul>
+      <li>Avatar data written via the Holochain provider can be read back via the MongoDB provider (via HyperDrive sync).</li>
+      <li>OApps can specify their preferred provider per call, or let ONODE choose via the configured default and failover chain.</li>
+      <li>New blockchains, databases, or distributed systems can be added without touching the kernel.</li>
+    </ul>
+
+    <div class="callout callout-note">
+      <div class="callout-icon">ℹ️</div>
+      <div class="callout-body">
+        <div class="callout-title">Provider selection per request</div>
+        <p>Pass <code>providerType</code> in any REST request body to override the ONODE default for that call. Example: <code>"providerType": "HoloOASIS"</code> to force Holochain storage.</p>
+      </div>
+    </div>
+
+    <h2 id="hyperdrive">HyperDrive</h2>
+    <p>HyperDrive is OASIS's distributed data replication and failover engine. It sits between the kernel and the provider layer and:</p>
+    <ul>
+      <li>Replicates writes across multiple providers simultaneously (configurable write quorum).</li>
+      <li>Automatically fails over reads to the next healthy provider if the primary is unavailable.</li>
+      <li>Tracks provider health scores and routes traffic away from degraded nodes.</li>
+      <li>Handles data migration between providers without downtime.</li>
+    </ul>
+    <p>See the <a href="/providers/hyperdrive">HyperDrive guide</a> for configuration details.</p>
+
+    <h2 id="onode">ONODE</h2>
+    <p>An ONODE is a self-contained OASIS node — it runs the WebAPI, manages a set of providers, and optionally participates in the ONET peer-to-peer network. You can run an ONODE:</p>
+    <ul>
+      <li><strong>Locally</strong> — for development against <code>http://localhost:4000</code></li>
+      <li><strong>Self-hosted</strong> — for a community or organisation's dedicated OASIS node</li>
+      <li><strong>On ONET</strong> — joining the decentralised node network with DID-based authentication</li>
+    </ul>
+    <p>See <a href="/providers/onode">ONODE Setup</a> for installation and configuration.</p>
+
+    <h2 id="star">STAR Runtime</h2>
+    <p>STAR (Systematic Technological Automated Runtime) is the OApp deployment and lifecycle engine. It provides:</p>
+    <ul>
+      <li>OApp compilation from source into a deployable OAPP package</li>
+      <li>Version management and rollback</li>
+      <li>Binding OApp identity to the avatar that created it (creator karma rewards)</li>
+      <li>Runtime sandboxing and resource limits per OApp</li>
+    </ul>
+
+    <h2 id="web4-web5">Web4 vs Web5</h2>
+    <p>OASIS ships two API surface levels that correspond to capability tiers:</p>
+    <div class="api-table-wrap"><table>
+      <thead><tr><th></th><th>WEB4</th><th>WEB5</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Focus</strong></td><td>Avatar, karma, data, NFT, quests, missions, maps</td><td>WEB4 + Celestial Spaces, GeoNFTs, Cosmic layer, holonic memory</td></tr>
+        <tr><td><strong>JS package</strong></td><td><code>@oasisomniverse/web4-api</code></td><td><code>@oasisomniverse/web5-api</code></td></tr>
+        <tr><td><strong>Use when</strong></td><td>Building standard OApps and games</td><td>Building spatial / AR / cosmic-scale experiences</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="doc-nav">
+      <a href="/"><div class="nav-direction">← Back</div><div class="nav-title">Home</div></a>
+      <a class="next" href="/concepts/holons"><div class="nav-direction">Next →</div><div class="nav-title">Holons &amp; Data Model</div></a>
+    </div>
+  </main>
+
+  <aside class="rail">
+    <div class="rail-title">On this page</div>
+    <nav class="rail-nav">
+      <a href="#layers">The Four Layers</a>
+      <a href="#provider-model">Provider Model</a>
+      <a href="#hyperdrive">HyperDrive</a>
+      <a href="#onode">ONODE</a>
+      <a href="#star">STAR Runtime</a>
+      <a href="#web4-web5">Web4 vs Web5</a>
+    </nav>
+  </aside>
+</div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

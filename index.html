@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OASIS Docs — Developer Reference</title>
+<meta name="description" content="Complete API reference, SDK documentation, provider guides, and architecture concepts for the OASIS Omniverse platform.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Titillium+Web:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .hero { padding: 60px 0 48px; max-width: 660px; }
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-heading); font-size: 36px; font-weight: 700;
+    color: #fff; line-height: 1.2; margin-bottom: 16px;
+  }
+  .hero p { font-size: 16px; color: var(--text-dim); margin-bottom: 32px; }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: var(--bg); font-weight: 700;
+    font-size: 14px; padding: 12px 24px; border-radius: 6px;
+    text-decoration: none; transition: background 0.15s, transform 0.15s;
+  }
+  .btn-primary:hover { background: #33ddff; transform: translateY(-1px); text-decoration: none; }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--surface-2); color: var(--text); font-weight: 600;
+    font-size: 14px; padding: 12px 24px; border-radius: 6px; border: 1px solid var(--border);
+    text-decoration: none; transition: border-color 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--accent); text-decoration: none; }
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted); margin: 48px 0 20px;
+  }
+  .track-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 48px;
+  }
+  .track-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px; text-decoration: none; display: block;
+    transition: border-color 0.2s, box-shadow 0.2s; position: relative; overflow: hidden;
+  }
+  .track-card:hover { border-color: var(--accent); box-shadow: 0 0 24px var(--accent-glow); text-decoration: none; }
+  .track-card.purple:hover { border-color: var(--purple); box-shadow: 0 0 24px rgba(124,58,237,0.2); }
+  .track-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--purple)); opacity: 0; transition: opacity 0.2s;
+  }
+  .track-card:hover::before { opacity: 1; }
+  .track-icon { font-size: 32px; margin-bottom: 14px; }
+  .track-card h3 { font-size: 16px; color: #fff; margin: 0 0 8px; font-weight: 700; }
+  .track-card p  { font-size: 13px; color: var(--text-dim); margin: 0 0 16px; line-height: 1.5; }
+  .track-links { display: flex; flex-direction: column; gap: 4px; }
+  .track-links a { font-size: 13px; color: var(--accent); }
+  .track-links a:hover { color: #33ddff; }
+  @media (max-width: 620px) { .track-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<button class="mobile-menu-btn">&#9776;</button>
+
+<div class="layout layout-no-rail">
+
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="/">
+      <div class="sidebar-logo-icon">O</div>
+      <div class="sidebar-logo-text">
+        <span class="site-name">OASIS DOCS</span>
+        <span class="site-sub">Developer Reference</span>
+      </div>
+    </a>
+    <div class="sidebar-search"><input type="search" placeholder="Search docs…" aria-label="Search"></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item active" href="/">Home</a>
+      <a class="nav-item" href="/concepts/architecture">Architecture</a>
+      <a class="nav-item" href="/concepts/holons">Holons &amp; Data Model</a>
+      <a class="nav-item" href="/concepts/did-auth">DID Authentication</a>
+      <a class="nav-item" href="/concepts/karma">Karma System</a>
+      <div class="nav-section-title">SDK Reference</div>
+      <a class="nav-item" href="/sdks/web4-api">WEB4 API (JS)</a>
+      <a class="nav-item" href="/sdks/web5-api">WEB5 API (JS)</a>
+      <a class="nav-item" href="/sdks/dotnet">OASIS .NET SDK</a>
+      <div class="nav-section-title">REST API</div>
+      <a class="nav-item" href="/reference/avatar">Avatar</a>
+      <a class="nav-item" href="/reference/karma">Karma</a>
+      <a class="nav-item" href="/reference/data">Data &amp; Holons</a>
+      <a class="nav-item" href="/reference/nft">NFT &amp; Wallet</a>
+      <a class="nav-item" href="/reference/search">Search</a>
+      <a class="nav-item" href="/reference/errors">Errors &amp; Codes</a>
+      <div class="nav-section-title">Provider Guides</div>
+      <a class="nav-item" href="/providers/overview">Provider Overview</a>
+      <a class="nav-item" href="/providers/holochain">Holochain / HoloNET</a>
+      <a class="nav-item" href="/providers/hyperdrive">HyperDrive</a>
+      <a class="nav-item" href="/providers/onode">ONODE Setup</a>
+      <a class="nav-item" href="/providers/ethereum">Ethereum / EVM</a>
+      <a class="nav-item" href="/providers/custom">Building a Provider</a>
+      <div class="nav-section-title">Resources</div>
+      <a class="nav-item" href="https://learn.oasisomniverse.one" target="_blank">Tutorials ↗</a>
+      <a class="nav-item" href="https://oportal.oasisomniverse.one/developer" target="_blank">Dev Portal ↗</a>
+      <a class="nav-item" href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank">GitHub ↗</a>
+      <a class="nav-item" href="/changelog">Changelog</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://oasisomniverse.one" target="_blank">oasisomniverse.one</a>
+      <a href="https://discord.gg/oasis" target="_blank">Discord Community</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="hero">
+      <div class="hero-eyebrow">docs.oasisomniverse.one</div>
+      <h1>OASIS Developer Reference</h1>
+      <p>Complete API reference, SDK documentation, provider architecture guides, and conceptual overviews for building on the OASIS Omniverse platform.</p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="/reference/avatar">Browse API Reference</a>
+        <a class="btn-secondary" href="https://learn.oasisomniverse.one" target="_blank">Tutorials &amp; Examples</a>
+      </div>
+    </div>
+
+    <div class="section-label">Choose your path</div>
+
+    <div class="track-grid">
+      <a class="track-card" href="/reference/avatar">
+        <div class="track-icon">⚡</div>
+        <h3>Build With OASIS</h3>
+        <p>REST API reference, JS SDK modules, response envelopes, auth flows. Everything you need to build an OApp.</p>
+        <div class="track-links">
+          <span>Avatar API →</span>
+          <span>Karma API →</span>
+          <span>WEB4 SDK →</span>
+        </div>
+      </a>
+      <a class="track-card purple" href="/providers/overview">
+        <div class="track-icon">🔌</div>
+        <h3>Extend OASIS</h3>
+        <p>Provider architecture, HoloNET deep-dive, HyperDrive failover config, running your own ONODE.</p>
+        <div class="track-links">
+          <span>Provider Overview →</span>
+          <span>HoloNET Guide →</span>
+          <span>ONODE Setup →</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="section-label">Reference</div>
+    <div class="card-grid">
+      <a class="doc-card" href="/reference/avatar">
+        <div class="doc-card-icon">👤</div>
+        <h3>Avatar API</h3>
+        <p>Register, authenticate, fetch, update and delete avatar profiles. Includes JWT token lifecycle.</p>
+      </a>
+      <a class="doc-card" href="/reference/karma">
+        <div class="doc-card-icon">⭐</div>
+        <h3>Karma API</h3>
+        <p>Award, deduct and query karma. Karma types, thresholds, and leaderboard endpoints.</p>
+      </a>
+      <a class="doc-card" href="/reference/data">
+        <div class="doc-card-icon">🧬</div>
+        <h3>Data &amp; Holons</h3>
+        <p>Store and retrieve arbitrary holonic data across any configured OASIS provider.</p>
+      </a>
+      <a class="doc-card" href="/reference/nft">
+        <div class="doc-card-icon">💎</div>
+        <h3>NFT &amp; Wallet</h3>
+        <p>Mint, transfer, and query NFTs. Wallet balance, transaction history, multi-chain support.</p>
+      </a>
+      <a class="doc-card" href="/sdks/web4-api">
+        <div class="doc-card-icon">📦</div>
+        <h3>WEB4 JS SDK</h3>
+        <p>Full module reference for <code>@oasisomniverse/web4-api</code> — Auth, Avatar, Karma, Data, NFT, Map and more.</p>
+      </a>
+      <a class="doc-card" href="/providers/holochain">
+        <div class="doc-card-icon">🌐</div>
+        <h3>HoloNET / Holochain</h3>
+        <p>Conductor setup, zome call patterns, DNA configuration and HoloNET connection lifecycle.</p>
+      </a>
+      <a class="doc-card" href="/concepts/architecture">
+        <div class="doc-card-icon">🏗️</div>
+        <h3>Architecture</h3>
+        <p>How the OASIS kernel, providers, ONODE, and STAR runtime fit together.</p>
+      </a>
+      <a class="doc-card" href="/reference/errors">
+        <div class="doc-card-icon">🔴</div>
+        <h3>Errors &amp; Codes</h3>
+        <p>OASIS response envelope, <code>isError</code> / <code>isWarning</code> semantics, and all error codes.</p>
+      </a>
+    </div>
+
+    <div class="section-label" style="margin-top:48px;">Not sure where to start?</div>
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <div class="callout-title">New to OASIS?</div>
+        <p>Head to <a href="https://learn.oasisomniverse.one" target="_blank">learn.oasisomniverse.one</a> for step-by-step tutorials — from your first API call to building a full metaverse game. Come back here when you need the reference detail.</p>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script src="assets/js/site.js"></script>
+</body>
+</html>
