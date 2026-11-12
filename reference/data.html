@@ -113,6 +113,12 @@
     <div class="endpoint"><span class="method method-delete">DELETE</span><span class="endpoint-path">/data/DeleteHolon/{id}</span></div>
     <p>Soft-deletes the holon. Pass <code>?hardDelete=true</code> to permanently remove (Admin only).</p>
 
+    <h2 id="holon-audit-trail">Holon Audit Trail</h2>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/data/holon-audit-trail/{id}</span></div>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/data/holon-audit-trail/{id}</span></div>
+    <p>A readable history of a holon built from its saved versions, newest first. Each entry has the <code>version</code>, <code>timestamp</code>, <code>avatarId</code>, <code>avatarName</code> (blank if not readable), an <code>action</code> (<code>created</code>, <code>updated</code>, <code>deleted</code> or <code>restored</code>) and <code>changes</code> of <code>{field, oldValue, newValue}</code> covering core fields and metadata keys. Long values are clipped, and JSON lists of records with an <code>id</code> are summarised as added/removed/changed. Query: <code>fromVersion</code>, <code>toVersion</code>, <code>limit</code> (max 200), <code>offset</code>. The POST accepts <code>fieldLabels</code> and <code>skipKeys</code>.</p>
+    <p>Only callers who may read the holon get its trail, limited to the fields they can read. Versions are assigned by the server and archived append-only with SHA-256 checksums; a soft delete keeps every version, while a permanent delete removes the holon and its history. PIPER uses this endpoint for its audit record of authority.</p>
+
     <h2 id="save-holons">Save Multiple Holons</h2>
     <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/data/SaveHolons</span></div>
     <p>Batch-saves an array of holons in a single request. Body: <code>{ "holons": […], "providerType": "…" }</code>. Returns an array of saved holons with their assigned IDs.</p>
