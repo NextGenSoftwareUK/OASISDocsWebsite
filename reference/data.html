@@ -113,6 +113,12 @@
     <div class="endpoint"><span class="method method-delete">DELETE</span><span class="endpoint-path">/data/DeleteHolon/{id}</span></div>
     <p>Soft-deletes the holon. Pass <code>?hardDelete=true</code> to permanently remove (Admin only).</p>
 
+    <h2 id="holon-access-log">Holon Access Log</h2>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/data/holon-access-log/{id}</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/data/access-log?avatarId={id}</span></div>
+    <p>Who READ a holon (ids only, never content), newest first, paged with <code>limit</code> and <code>offset</code>. Opt-in and off by default: set <code>OASIS.AccessLog.Enabled</code> in <code>OASIS_DNA.json</code>. The per-holon query is for the holon's owner or a Wizard; the avatar query returns your own reads (a Wizard may pass any avatarId). Entries hold the reader, app id, operation, holon type, holon ids (capped) and total count.</p>
+    <p>Reads are queued and written in the background, so they never slow a request, but events can be lost if the queue is full or the node stops. Volume grows with traffic; use <code>RetentionDays</code> (default 365) and the app, type and operation filters. Reads that bypass the WEB4 Data API (direct provider or database access) are not recorded.</p>
+
     <h2 id="holon-audit-trail">Holon Audit Trail</h2>
     <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/data/holon-audit-trail/{id}</span></div>
     <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/data/holon-audit-trail/{id}</span></div>

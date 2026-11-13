@@ -180,6 +180,11 @@
       </div>
     </div>
 
+    <h2 id="mfa">Multi-Factor Authentication (optional)</h2>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/avatar/authenticate-mfa</span></div>
+    <p>Off by default (<code>OASIS.Security.Mfa.Enabled</code> in <code>OASIS_DNA.json</code>); only avatars that enrol are asked for a second step, so existing sign-ins are unchanged. For an MFA avatar <code>authenticate</code> returns no tokens but <code>result.metaData.mfaRequired</code> and a single-use <code>mfaChallengeToken</code>. Send <code>{ "challengeToken", "code" }</code> (or <code>"recoveryCode"</code>) to <code>authenticate-mfa</code> to receive the normal signed-in avatar with JWT and refresh token. The same step applies to DID sign-in; gRPC refuses MFA avatars.</p>
+    <p>Self-service: <code>GET mfa/status</code>, <code>POST mfa/enrol</code> (secret and otpauth link), <code>POST mfa/confirm</code> (returns recovery codes once), <code>POST mfa/disable</code>, <code>POST mfa/recovery-codes</code>, <code>GET mfa/events</code>. Administrators (Wizard) can <code>POST mfa/reset/{avatarId}</code> for a lost device. Codes use a replay guard, a challenge attempt limit and a per-avatar cool-down; the secret is encrypted and never logged.</p>
+
     <h2 id="get-avatar">Get Avatar</h2>
     <div class="endpoint">
       <span class="method method-get">GET</span>
