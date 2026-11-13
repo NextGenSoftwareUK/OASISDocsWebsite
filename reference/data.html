@@ -113,6 +113,12 @@
     <div class="endpoint"><span class="method method-delete">DELETE</span><span class="endpoint-path">/data/DeleteHolon/{id}</span></div>
     <p>Soft-deletes the holon. Pass <code>?hardDelete=true</code> to permanently remove (Admin only).</p>
 
+    <h2 id="usage-visibility">Usage Visibility, Owners and Warnings</h2>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/subscription/usage/series</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/subscription/app-owner/{appId}/usage</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/subscription/usage/alerts</span></div>
+    <p>Daily usage series for charts (your own, an app pool's for its owners, anyone's for administrators), usage warnings at thresholds you choose (default 80% and 100%, optionally by email) and app owner views that show only the apps you own. Nothing shows request content. The node defaults are in <code>OASIS.UsageVisibility</code> in <code>OASIS_DNA.json</code>; each person and each app account can opt in or out for themselves and their choice wins. App pay-as-you-go records an owner's consent and monthly cap only: nothing is charged yet. See the Subscription API reference for all endpoints and keys.</p>
+
     <h2 id="holon-access-log">Holon Access Log</h2>
     <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/data/holon-access-log/{id}</span></div>
     <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/data/access-log?avatarId={id}</span></div>
