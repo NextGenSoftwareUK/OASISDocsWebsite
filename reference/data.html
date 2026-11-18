@@ -131,6 +131,22 @@
     <p>A readable history of a holon built from its saved versions, newest first. Each entry has the <code>version</code>, <code>timestamp</code>, <code>avatarId</code>, <code>avatarName</code> (blank if not readable), an <code>action</code> (<code>created</code>, <code>updated</code>, <code>deleted</code> or <code>restored</code>) and <code>changes</code> of <code>{field, oldValue, newValue}</code> covering core fields and metadata keys. Long values are clipped, and JSON lists of records with an <code>id</code> are summarised as added/removed/changed. Query: <code>fromVersion</code>, <code>toVersion</code>, <code>limit</code> (max 200), <code>offset</code>. The POST accepts <code>fieldLabels</code> and <code>skipKeys</code>.</p>
     <p>Only callers who may read the holon get its trail, limited to the fields they can read. Versions are assigned by the server and archived append-only with SHA-256 checksums; a soft delete keeps every version, while a permanent delete removes the holon and its history. PIPER uses this endpoint for its audit record of authority.</p>
 
+    <h2 id="holon-seal">Sealed History (opt-in)</h2>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/data/holon-seal/verify/{id}</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/avatar/holon-seal</span></div>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/avatar/holon-seal</span></div>
+    <p>Makes every saved version of a holon tamper-evident: each version carries a keyed seal chained to the one before. Off by default (<code>OASIS.HolonSeal.Enabled</code> plus a server key); each avatar and each app then opts in. The verify call returns <code>Verified</code>, <code>Broken</code> (with the version where it breaks), <code>Partial</code>, <code>Unsealed</code>, <code>Unavailable</code> or <code>Purged</code>.
+
+    <h2 id="purge-holon">Purge Earlier Versions (opt-in)</h2>
+    <div class="endpoint"><span class="method method-delete">DELETE</span><span class="endpoint-path">/api/data/purge-holon/{id}</span></div>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/data/purge-holons</span></div>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/data/holon-purge-hold/{id}</span></div>
+    <div class="endpoint"><span class="method method-delete">DELETE</span><span class="endpoint-path">/api/data/holon-purge-hold/{id}</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/data/holon-purge/status/{id}</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/avatar/version-purge</span></div>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/avatar/version-purge</span></div>
+    <p>A delete keeps every earlier saved version. Purge permanently removes ALL of them, so a deleted record's history is really gone. Off by default (<code>OASIS.VersionPurge.Enabled</code>). Only the holon's creator, or an avatar with a Delete grant, may purge; the holon must already be deleted (unless <code>allowLive=true</code>); a legal hold blocks it. Deleted holons can also be purged automatically after <code>PurgeAfterDays</code> (default 30; 0 to 3650), set globally in the DNA and overridden per app and per avatar (most specific wins; the global switch can forbid it). The result lists every store that was purged and every one that could not be (replicas, database backups). Batch form: up to 100 ids. This cannot be undone.</p>
+
     <h2 id="save-holons">Save Multiple Holons</h2>
     <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/data/SaveHolons</span></div>
     <p>Batch-saves an array of holons in a single request. Body: <code>{ "holons": […], "providerType": "…" }</code>. Returns an array of saved holons with their assigned IDs.</p>

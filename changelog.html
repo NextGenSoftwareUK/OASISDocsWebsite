@@ -109,6 +109,8 @@
       <div class="changelog-version">v4.6.0</div>
       <div class="changelog-date">2026 — Current</div>
       <ul>
+        <li><strong>Opt-in version purge</strong>: <code>DELETE /api/data/purge-holon/{id}</code>, <code>POST /api/data/purge-holons</code>, legal hold and status endpoints, <code>/api/avatar/version-purge</code>, DNA <code>OASIS.VersionPurge</code> (default off, 30 days).</li>
+        <li><strong>Opt-in sealed history</strong>: <code>/api/data/holon-seal/verify/{id}</code>, <code>/api/avatar/holon-seal</code>.</li>
         <li><span class="change-fix">FIX</span> <code>Guid.TryParse</code> duplicate variable names in <code>DataHelper</code> (AvatarDetail + Holon conversions)</li>
         <li><span class="change-fix">FIX</span> Username/email sync: early return on conflict prevents partial saves</li>
         <li><span class="change-fix">FIX</span> Avatar→AvatarDetail sync added to <code>SaveAvatarAsync</code></li>
