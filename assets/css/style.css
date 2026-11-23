@@ -600,3 +600,44 @@ td code { font-size: 12px; }
 @media (min-width: 781px) {
   .mobile-menu-btn { display: none; }
 }
+
+/* ─── MOBILE: KEEP EVERY PAGE INSIDE THE SCREEN ──────────────
+   Grid items default to min-width:auto, so one wide table or code line used to
+   stretch the main column (and the whole page) past the phone's width. */
+.main,
+.layout > * {
+  min-width: 0;
+}
+
+@media (max-width: 780px) {
+  html, body { max-width: 100%; overflow-x: hidden; }
+  .layout-no-rail { grid-template-columns: 1fr; grid-template-areas: "main"; }
+  .main { width: 100%; max-width: 100%; padding: 64px 16px 60px; }
+  .page-header { padding-top: 8px; }
+
+  /* Wide content scrolls inside its own box instead of widening the page. */
+  .code-block,
+  .api-table-wrap,
+  .endpoint { max-width: 100%; }
+  .code-block pre { font-size: 12.5px; padding: 14px; }
+  .main > table,
+  .main section > table,
+  .main div:not(.api-table-wrap) > table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  table { font-size: 13px; min-width: 520px; }
+  th, td { padding: 8px 10px; }
+  th { white-space: nowrap; }
+
+  /* Long endpoint paths, URLs and identifiers wrap. */
+  .endpoint { flex-wrap: wrap; row-gap: 6px; }
+  .endpoint-path,
+  .main p,
+  .main li,
+  .breadcrumb,
+  .page-meta { overflow-wrap: anywhere; }
+  code { overflow-wrap: anywhere; word-break: break-word; }
+  td code, th code { overflow-wrap: normal; word-break: normal; white-space: nowrap; }
+}
