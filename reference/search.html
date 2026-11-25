@@ -62,7 +62,7 @@
     </div>
 
     <h2 id="search-all">Search All</h2>
-    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/search/{searchTerm}</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/search/{searchParams}</span></div>
     <p>Global full-text search across all entity types. Returns grouped results by type.</p>
     <h3>Response <code>result</code></h3>
     <div class="api-table-wrap"><table>
@@ -77,11 +77,11 @@
     </table></div>
 
     <h2 id="search-avatars">Search Avatars</h2>
-    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/avatar/search/{searchTerm}</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/avatar/search-directory?query={searchTerm}</span></div>
     <p>Searches avatar <code>username</code>, <code>email</code>, <code>title</code>, and <code>description</code> fields.</p>
 
     <h2 id="search-holons">Search Holons</h2>
-    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/data/SearchHolons/{searchTerm}</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/data/search-holons/{searchTerm}</span></div>
     <p>Searches holon <code>name</code>, <code>description</code>, and <code>metaData</code> fields.</p>
 
     <div class="callout callout-note">

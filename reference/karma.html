@@ -82,7 +82,7 @@
     </table></div>
 
     <h2 id="award-karma">Award Karma</h2>
-    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/avatar/AddKarmaToAvatar</span></div>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/karma/add-karma-to-avatar/{avatarId}</span></div>
     <p>Awards karma to an avatar. Requires a valid JWT. OApps should call this on significant positive player actions.</p>
     <h3>Request body</h3>
     <div class="api-table-wrap"><table>
@@ -107,11 +107,11 @@
     </div>
 
     <h2 id="remove-karma">Remove Karma</h2>
-    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/avatar/RemoveKarmaFromAvatar</span></div>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/karma/remove-karma-from-avatar/{avatarId}</span></div>
     <p>Deducts karma. Same body shape as Award but uses <code>KarmaTypeNegative</code> enum values for <code>karmaType</code>.</p>
 
     <h2 id="get-karma">Get Karma for Avatar</h2>
-    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/avatar/{id}/karma</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/karma/get-karma-for-avatar/{avatarId}</span></div>
     <p>Returns the full karma history and total for the given avatar ID.</p>
     <h3>Response <code>result</code></h3>
     <div class="api-table-wrap"><table>
@@ -123,9 +123,8 @@
     </table></div>
 
     <h2 id="leaderboard">Leaderboard</h2>
-    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/avatar/GetAvatarsWithKarmaLessThan/{karmaAmount}</span></div>
-    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/avatar/GetAvatarsWithKarmaGreaterThan/{karmaAmount}</span></div>
-    <p>Filter avatars by karma threshold — useful for building leaderboards or gating OApp features behind reputation levels.</p>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/stats/leaderboard-stats/{avatarId}</span></div>
+    <p>Leaderboard position and nearby avatars for one avatar. For an avatar's own trend use <code>GET /api/karma/get-karma-history/{avatarId}</code> and <code>GET /api/karma/get-karma-stats/{avatarId}</code>.</p>
 
     <div class="callout callout-tip">
       <div class="callout-icon">💡</div>

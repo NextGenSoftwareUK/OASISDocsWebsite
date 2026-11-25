@@ -62,7 +62,7 @@
     </div>
 
     <h2 id="mint">Mint NFT</h2>
-    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/nft/mint</span></div>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/nft/mint-nft</span></div>
     <div class="api-table-wrap"><table>
       <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
       <tbody>
@@ -78,7 +78,7 @@
     </table></div>
 
     <h2 id="transfer">Transfer NFT</h2>
-    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/nft/transfer</span></div>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/nft/send-nft</span></div>
     <div class="api-table-wrap"><table>
       <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
       <tbody>
@@ -90,22 +90,25 @@
     </table></div>
 
     <h2 id="get-nfts">Get NFTs for Avatar</h2>
-    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/nft/GetNFTsForAvatar/{avatarId}</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/nft/load-all-nfts-for-avatar/{avatarId}</span></div>
     <p>Returns all NFTs owned by the given avatar, across all chains. Optionally filter with <code>?providerType=EthereumOASIS</code>.</p>
 
     <h2 id="get-nft">Get NFT</h2>
-    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/nft/{id}</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/nft/load-nft-by-id/{id}</span></div>
     <p>Fetch a single NFT by its OASIS ID, including full metadata and ownership history.</p>
 
     <h2 id="wallet">Wallet</h2>
-    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/wallet/GetBalanceForAvatar/{avatarId}</span></div>
-    <p>Returns token balances across all chains the avatar has interacted with.</p>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/wallet/current-avatar/summary</span></div>
+    <p>The signed-in avatar's wallets across every chain, with the default wallet for each.</p>
 
-    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/wallet/GetBalanceForAvatar/{avatarId}/{providerType}</span></div>
-    <p>Returns balance for a specific chain/provider.</p>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/wallet/avatar/{avatarId}/portfolio/value</span></div>
+    <p>Total portfolio value across chains.</p>
 
-    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/wallet/GetTransactionsForAvatar/{avatarId}</span></div>
-    <p>Full transaction history for the avatar's wallet, newest first.</p>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/wallet/avatar/{avatarId}/wallets/chain/{chain}</span></div>
+    <p>Wallets on one chain.</p>
+
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/wallet/supported-chains</span></div>
+    <p>Chains the wallet API supports.</p>
 
     <div class="callout callout-warning">
       <div class="callout-icon">⚠️</div>

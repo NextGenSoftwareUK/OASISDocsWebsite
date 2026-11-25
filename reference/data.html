@@ -70,7 +70,7 @@
     </div>
 
     <h2 id="save-holon">Save Holon</h2>
-    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/data/SaveHolon</span></div>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/data/save-holon</span></div>
     <p>Persists a holon. Creates a new record if no <code>id</code> is provided; updates the existing record if <code>id</code> is present.</p>
 
     <h3>Request body</h3>
@@ -98,19 +98,19 @@
     </div>
 
     <h2 id="load-holon">Load Holon</h2>
-    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/data/LoadHolon/{id}</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/data/load-holon/{id}</span></div>
     <p>Loads a single holon by its GUID. Optionally pass <code>?providerType=HoloOASIS</code> to target a specific provider.</p>
 
     <h2 id="load-all-holons">Load All Holons</h2>
-    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/data/LoadAllHolons</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/data/load-all-holons/{holonType}</span></div>
     <p>Returns all holons across the default provider. For large datasets, use Search with filters instead.</p>
 
     <h2 id="load-holons-for-parent">Load Holons for Parent</h2>
-    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/data/LoadHolonsForParent/{parentId}</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/data/load-holons-for-parent/{parentId}/{holonType}</span></div>
     <p>Returns all child holons nested under the given parent holon ID.</p>
 
     <h2 id="delete-holon">Delete Holon</h2>
-    <div class="endpoint"><span class="method method-delete">DELETE</span><span class="endpoint-path">/data/DeleteHolon/{id}</span></div>
+    <div class="endpoint"><span class="method method-delete">DELETE</span><span class="endpoint-path">/api/data/delete-holon/{id}</span></div>
     <p>Soft-deletes the holon. Pass <code>?hardDelete=true</code> to permanently remove (Admin only).</p>
 
     <h2 id="usage-visibility">Usage Visibility, Owners and Warnings</h2>
@@ -148,7 +148,7 @@
     <p>A delete keeps every earlier saved version. Purge permanently removes ALL of them, so a deleted record's history is really gone. Off by default (<code>OASIS.VersionPurge.Enabled</code>). Only the holon's creator, or an avatar with a Delete grant, may purge; the holon must already be deleted (unless <code>allowLive=true</code>); a legal hold blocks it. Deleted holons can also be purged automatically after <code>PurgeAfterDays</code> (default 30; 0 to 3650), set globally in the DNA and overridden per app and per avatar (most specific wins; the global switch can forbid it). The result lists every store that was purged and every one that could not be (replicas, database backups). Batch form: up to 100 ids. This cannot be undone.</p>
 
     <h2 id="save-holons">Save Multiple Holons</h2>
-    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/data/SaveHolons</span></div>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/data/save-holons</span></div>
     <p>Batch-saves an array of holons in a single request. Body: <code>{ "holons": […], "providerType": "…" }</code>. Returns an array of saved holons with their assigned IDs.</p>
 
     <div class="callout callout-tip">

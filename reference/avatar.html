@@ -104,7 +104,7 @@
     <h2 id="register">Register</h2>
     <div class="endpoint">
       <span class="method method-post">POST</span>
-      <span class="endpoint-path">/avatar/register</span>
+      <span class="endpoint-path">/api/avatar/register</span>
     </div>
     <p>Creates a new avatar. Sends a verification email to the supplied address.</p>
 
@@ -142,7 +142,7 @@
     <h2 id="authenticate">Authenticate</h2>
     <div class="endpoint">
       <span class="method method-post">POST</span>
-      <span class="endpoint-path">/avatar/authenticate</span>
+      <span class="endpoint-path">/api/avatar/authenticate</span>
     </div>
     <p>Authenticates an avatar by username/email + password. Returns a JWT token valid for 7 days.</p>
 
@@ -188,21 +188,21 @@
     <h2 id="get-avatar">Get Avatar</h2>
     <div class="endpoint">
       <span class="method method-get">GET</span>
-      <span class="endpoint-path">/avatar/{id}</span>
+      <span class="endpoint-path">/api/avatar/get-by-id/{id}</span>
     </div>
     <p>Returns the full avatar profile for the given ID. Requires a valid JWT in the <code>Authorization: Bearer &lt;token&gt;</code> header.</p>
 
     <h2 id="get-all">Get All Avatars</h2>
     <div class="endpoint">
       <span class="method method-get">GET</span>
-      <span class="endpoint-path">/avatar</span>
+      <span class="endpoint-path">/api/avatar/get-all-avatars</span>
     </div>
     <p>Returns all avatars. Admin-only — requires an avatar with <code>AvatarType: Admin</code>.</p>
 
     <h2 id="update">Update Avatar</h2>
     <div class="endpoint">
-      <span class="method method-put">PUT</span>
-      <span class="endpoint-path">/avatar/{id}</span>
+      <span class="method method-post">POST</span>
+      <span class="endpoint-path">/api/avatar/update-by-id/{id}</span>
     </div>
     <p>Updates avatar fields. Only the authenticated avatar owner or an Admin may update a profile.</p>
 
@@ -224,22 +224,17 @@
     <h2 id="delete">Delete Avatar</h2>
     <div class="endpoint">
       <span class="method method-delete">DELETE</span>
-      <span class="endpoint-path">/avatar/{id}</span>
+      <span class="endpoint-path">/api/avatar/{id}</span>
     </div>
     <p>Soft-deletes the avatar. The record is retained in storage but marked inactive. Admin-only.</p>
 
     <h2 id="email-verification">Email Verification</h2>
     <div class="endpoint">
       <span class="method method-get">GET</span>
-      <span class="endpoint-path">/avatar/verify-email</span>
+      <span class="endpoint-path">/api/avatar/verify-email?token={token}</span>
     </div>
     <p>Called automatically when the user clicks the link in their verification email. Query param: <code>token</code>.</p>
-
-    <div class="endpoint">
-      <span class="method method-post">POST</span>
-      <span class="endpoint-path">/avatar/resend-verification-email/{email}</span>
-    </div>
-    <p>Re-sends the verification email. Rate-limited to 3 per hour per email address.</p>
+    <p>To send a new verification email, the avatar signs up again with the same email address, or an admin verifies it with <code>POST /api/avatar/{avatarId}/verify</code>.</p>
 
     <h2 id="test-accounts">Creating many test accounts without email verification</h2>
     <p>Developers testing an app with lots of accounts (for example PIPER, which creates test staff for every role) can skip the verification email. This is a <strong>development-only</strong> feature with three guards, all of which must hold for a non-Wizard caller:</p>
@@ -269,13 +264,13 @@
     <h2 id="password-reset">Password Reset</h2>
     <div class="endpoint">
       <span class="method method-post">POST</span>
-      <span class="endpoint-path">/avatar/forgot-password</span>
+      <span class="endpoint-path">/api/avatar/forgot-password</span>
     </div>
     <p>Sends a password-reset email. Body: <code>{ "email": "…" }</code>.</p>
 
     <div class="endpoint">
       <span class="method method-post">POST</span>
-      <span class="endpoint-path">/avatar/reset-password</span>
+      <span class="endpoint-path">/api/avatar/reset-password</span>
     </div>
     <p>Resets the password using the token from the email. Body: <code>{ "token": "…", "password": "…", "confirmPassword": "…" }</code>.</p>
 
