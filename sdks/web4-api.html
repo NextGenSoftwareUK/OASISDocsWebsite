@@ -70,12 +70,15 @@
     <h2 id="init">Initialisation</h2>
     <div class="code-block">
       <div class="code-block-header"><span class="code-lang">javascript</span><button class="copy-btn">Copy</button></div>
-      <pre><span class="kw">import</span> OASIS <span class="kw">from</span> <span class="str">'@oasisomniverse/web4-api'</span>;
+      <pre><span class="kw">import</span> { OASISClient } <span class="kw">from</span> <span class="str">'@oasisomniverse/web4-api'</span>;
 
-<span class="kw">const</span> oasis = <span class="kw">new</span> <span class="cls">OASIS</span>({
-  baseUrl: <span class="str">'https://api.oasisomniverse.one'</span>,  <span class="cmt">// or your ONODE URL</span>
-  token:   <span class="str">'your-jwt-token'</span>                   <span class="cmt">// set after authenticate()</span>
-});</pre>
+<span class="kw">const</span> oasis = <span class="kw">new</span> <span class="cls">OASISClient</span>({
+  baseUrl: <span class="str">'https://api.web4.oasisomniverse.one'</span>  <span class="cmt">// or your ONODE URL</span>
+});
+
+<span class="cmt">// Sign in (stores the JWT for later calls), or set one you already have:</span>
+<span class="kw">await</span> oasis.auth.login({ username, password });
+oasis.setToken(jwtToken, { avatarId, username });</pre>
     </div>
 
     <h2 id="auth-module">Auth Module — <code>oasis.auth</code></h2>

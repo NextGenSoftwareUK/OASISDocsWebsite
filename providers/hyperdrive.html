@@ -77,33 +77,41 @@
 
     <h2 id="configuration">Configuration</h2>
     <div class="code-block">
-      <div class="code-block-header"><span class="code-lang">json — OASISDNA.json</span><button class="copy-btn">Copy</button></div>
+      <div class="code-block-header"><span class="code-lang">json — OASIS_DNA.json</span><button class="copy-btn">Copy</button></div>
       <pre>{
-  <span class="str">"OASISDNA"</span>: {
-    <span class="str">"DefaultProviderType"</span>:        <span class="str">"MongoDBOASIS"</span>,
-    <span class="str">"BackupProviderTypes"</span>:        [ <span class="str">"SQLiteOASIS"</span>, <span class="str">"HoloOASIS"</span> ],
-    <span class="str">"AutoFailoverEnabled"</span>:        <span class="kw">true</span>,
-    <span class="str">"AutoReplicationEnabled"</span>:     <span class="kw">true</span>,
-    <span class="str">"AutoLoadBalanceEnabled"</span>:     <span class="kw">false</span>,
-    <span class="str">"ProviderHealthCheckInterval"</span>: <span class="num">30</span>,   <span class="cmt">// seconds</span>
-    <span class="str">"ProviderHealthThreshold"</span>:     <span class="num">0.7</span>   <span class="cmt">// 0–1; below this, provider is bypassed</span>
+  <span class="str">"OASIS"</span>: {
+    <span class="str">"StorageProviders"</span>: {
+      <span class="str">"AutoFailOverEnabled"</span>:                 <span class="kw">true</span>,
+      <span class="str">"AutoReplicationEnabled"</span>:              <span class="kw">true</span>,
+      <span class="str">"AutoLoadBalanceEnabled"</span>:              <span class="kw">true</span>,
+      <span class="str">"AutoFailOverProviders"</span>:               <span class="str">"MongoDBOASIS, SQLLiteDBOASIS, Neo4jOASIS"</span>,
+      <span class="str">"AutoReplicationProviders"</span>:            <span class="str">"MongoDBOASIS, SQLLiteDBOASIS, Neo4jOASIS"</span>,
+      <span class="str">"AutoLoadBalanceProviders"</span>:            <span class="str">"MongoDBOASIS, SQLLiteDBOASIS, Neo4jOASIS"</span>,
+      <span class="str">"AutoLoadBalanceReadPollIntervalMins"</span>:  <span class="num">10</span>,
+      <span class="str">"AutoLoadBalanceWritePollIntervalMins"</span>: <span class="num">10</span>
+    }
   }
 }</pre>
     </div>
 
-    <h2 id="health-scores">Provider Health Scores</h2>
-    <p>HyperDrive maintains a rolling health score (0.0–1.0) for each provider based on recent operation success rates. A provider below <code>ProviderHealthThreshold</code> is automatically bypassed for reads until it recovers.</p>
-    <p>Query health scores at runtime via the API:</p>
-    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/hyperdrive/GetProviderHealth</span></div>
+    <h2 id="health-scores">Provider Status and Metrics</h2>
+    <p>HyperDrive tracks each provider's availability, latency and error rate. A provider that is down is skipped (fail-over) until it recovers. Read the live state at runtime:</p>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/hyperdrive/status</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/hyperdrive/metrics</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/hyperdrive/metrics/{providerType}</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/hyperdrive/dashboard</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/hyperdrive/best-provider</span></div>
 
-    <h2 id="manual-replication">Manual Replication</h2>
-    <p>Trigger a one-off replication from the primary to a specific backup provider:</p>
-    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/hyperdrive/ReplicateToProvider</span></div>
-    <p>Body: <code>{ "targetProviderType": "HoloOASIS" }</code></p>
-    <p>Useful after adding a new provider to backfill its data store from the primary.</p>
+    <h2 id="manual-replication">Replication and Fail-over Rules</h2>
+    <p>Writes go to the primary and are copied to every provider in <code>AutoReplicationProviders</code> through a per-holon outbox, so replicas catch up even after an outage. Inspect or change the rules and triggers with:</p>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/hyperdrive/replication/rules</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/hyperdrive/replication/triggers</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/hyperdrive/failover/rules</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/hyperdrive/failover/triggers</span></div>
+    <p>Quota and cost controls live under <code>/api/hyperdrive/quota/*</code> and <code>/api/hyperdrive/costs/*</code>. MongoDB must run as a replica set for HyperDrive's atomic writes.</p>
 
     <h2 id="load-balancing">Load Balancing</h2>
-    <p>When <code>AutoLoadBalanceEnabled</code> is true, HyperDrive distributes reads across all healthy providers using a weighted round-robin, weighted by health score. Suitable for read-heavy deployments with multiple fast providers.</p>
+    <p>When <code>AutoLoadBalanceEnabled</code> is true, HyperDrive spreads reads across the providers in <code>AutoLoadBalanceProviders</code> with a round-robin, skipping any that are down. Suitable for read-heavy deployments with multiple fast providers.</p>
 
     <div class="callout callout-warning">
       <div class="callout-icon">⚠️</div>
@@ -124,8 +132,8 @@
     <nav class="rail-nav">
       <a href="#how-it-works">How It Works</a>
       <a href="#configuration">Configuration</a>
-      <a href="#health-scores">Health Scores</a>
-      <a href="#manual-replication">Manual Replication</a>
+      <a href="#health-scores">Status &amp; Metrics</a>
+      <a href="#manual-replication">Replication Rules</a>
       <a href="#load-balancing">Load Balancing</a>
     </nav>
   </aside>
