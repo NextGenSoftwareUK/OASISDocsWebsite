@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CQL Sandbox — OASIS Docs</title>
+<meta name="description" content="A browser playground for CQL: a demo avatar, live providers and tools to take a provider offline and watch HyperDrive fail over.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Titillium+Web:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261123n">
+</head>
+<body>
+<button class="mobile-menu-btn">&#9776;</button>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="/"><div class="sidebar-logo-icon">O</div><div class="sidebar-logo-text"><span class="site-name">OASIS DOCS</span><span class="site-sub">Developer Reference</span></div></a>
+    <div class="sidebar-search"><input type="search" placeholder="Search docs…" aria-label="Search"></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item" href="/">Home</a>
+      <a class="nav-item" href="/concepts/architecture">Architecture</a>
+      <a class="nav-item" href="/concepts/holons">Holons &amp; Data Model</a>
+      <a class="nav-item" href="/concepts/did-auth">DID Authentication</a>
+      <a class="nav-item" href="/concepts/karma">Karma System</a>
+      <div class="nav-section-title">SDK Reference</div>
+      <a class="nav-item" href="/sdks/web4-api">WEB4 API (JS)</a>
+      <a class="nav-item" href="/sdks/web5-api">WEB5 API (JS)</a>
+      <a class="nav-item" href="/sdks/dotnet">OASIS .NET SDK</a>
+      <div class="nav-section-title">REST API</div>
+      <a class="nav-item" href="/reference/avatar">Avatar</a>
+      <a class="nav-item" href="/reference/karma">Karma</a>
+      <a class="nav-item" href="/reference/data">Data &amp; Holons</a>
+      <a class="nav-item" href="/reference/nft">NFT &amp; Wallet</a>
+      <a class="nav-item" href="/reference/search">Search</a>
+      <a class="nav-item" href="/reference/errors">Errors &amp; Codes</a>
+      <div class="nav-section-title">Provider Guides</div>
+      <a class="nav-item" href="/providers/overview">Provider Overview</a>
+      <a class="nav-item" href="/providers/holochain">Holochain / HoloNET</a>
+      <a class="nav-item" href="/providers/hyperdrive">HyperDrive</a>
+      <a class="nav-item" href="/providers/onode">ONODE Setup</a>
+      <a class="nav-item" href="/providers/ethereum">Ethereum / EVM</a>
+      <a class="nav-item" href="/providers/custom">Building a Provider</a>
+      <div class="nav-section-title">Resources</div>
+      <a class="nav-item" href="https://learn.oasisomniverse.one" target="_blank">Tutorials ↗</a>
+      <a class="nav-item" href="https://oportal.oasisomniverse.one/developer" target="_blank">Dev Portal ↗</a>
+      <a class="nav-item" href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank">GitHub ↗</a>
+      <a class="nav-item" href="/changelog">Changelog</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://oasisomniverse.one" target="_blank">oasisomniverse.one</a>
+      <a href="https://github.com/NextGenSoftwareUK/OASIS/blob/master/Docs/WEB4_One_World_Of_Data.md" target="_blank">WEB4: One World of Data</a>
+      <a href="https://discord.gg/oasis" target="_blank">Discord Community</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="/">OASIS Docs</a><span class="breadcrumb-sep">/</span><a href="/reference/search">REST API</a><span class="breadcrumb-sep">/</span><span>CQL Sandbox</span></div>
+      <div class="page-meta"><span class="badge badge-reference">Reference</span></div>
+      <h1 class="page-title">WEB4 CQL Sandbox</h1>
+      <p class="page-desc">A browser playground for CQL: a demo avatar, live providers and tools to take a provider offline and watch HyperDrive fail over.</p>
+    </div>
+
+    <h2 id="overview">Overview</h2>
+    <p>The sandbox runs on the WEB4 node at <a href="https://web4.oasisomniverse.one" target="_blank">web4.oasisomniverse.one</a>. It signs you in as a demo avatar, lets you run every CQL query kind against live providers, and shows how HyperDrive behaves when a provider goes offline. It is public and shared: put nothing private in it.</p>
+
+    <h2 id="session">Start a Session</h2>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/sandbox/session</span></div>
+    <p>Creates or resumes a demo avatar and returns its access token. The refresh token is set as an <code>HttpOnly</code>, <code>Secure</code>, <code>SameSite=Lax</code> cookie, the same as a normal sign-in. The page keeps the bearer in memory and renews it with <code>POST /api/avatar/refresh-token</code> before it expires.</p>
+
+    <h2 id="providers">Take Providers Offline</h2>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/sandbox/providers/{providerType}/offline</span></div>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/sandbox/providers/{providerType}/online</span></div>
+    <p>Marks a provider offline for your session so you can see HyperDrive route reads and writes to the next provider, then brings it back.</p>
+
+    <h2 id="faults">Faults and Refusals</h2>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/sandbox/faults</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/sandbox/refusals</span></div>
+    <p>Lists the faults HyperDrive handled and the requests the node refused (for example a query over the size limit or a reused <code>Idempotency-Key</code>), so you can see why something did not run.</p>
+
+    <h2 id="native-demo">Native Demo</h2>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/sandbox/native-demo</span></div>
+    <p>Runs the built-in native-provider demo: it writes sample holons and queries them back with CQL on the providers that store natively.</p>
+
+    <div class="doc-nav">
+      <a href="/reference/cql"><div class="nav-direction">← Previous</div><div class="nav-title">CQL Queries</div></a>
+      <a class="next" href="/reference/subscription"><div class="nav-direction">Next →</div><div class="nav-title">Subscription &amp; Usage</div></a>
+    </div>
+  </main>
+
+  <aside class="rail">
+    <div class="rail-title">On this page</div>
+    <nav class="rail-nav">
+      <a href="#overview">Overview</a>
+      <a href="#session">Start a Session</a>
+      <a href="#providers">Take Providers Offline</a>
+      <a href="#faults">Faults and Refusals</a>
+      <a href="#native-demo">Native Demo</a>
+    </nav>
+  </aside>
+</div>
+<script src="../assets/js/site.js?v=20261116c"></script>
+</body>
+</html>

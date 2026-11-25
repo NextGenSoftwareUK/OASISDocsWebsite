@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CQL Queries — OASIS Docs</title>
+<meta name="description" content="Query holons on any provider with CQL v1: a bounded JSON query that WEB4 compiles natively for MongoDB, SQLite, Neo4j, blockchains and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Titillium+Web:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261123n">
+</head>
+<body>
+<button class="mobile-menu-btn">&#9776;</button>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="/"><div class="sidebar-logo-icon">O</div><div class="sidebar-logo-text"><span class="site-name">OASIS DOCS</span><span class="site-sub">Developer Reference</span></div></a>
+    <div class="sidebar-search"><input type="search" placeholder="Search docs…" aria-label="Search"></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item" href="/">Home</a>
+      <a class="nav-item" href="/concepts/architecture">Architecture</a>
+      <a class="nav-item" href="/concepts/holons">Holons &amp; Data Model</a>
+      <a class="nav-item" href="/concepts/did-auth">DID Authentication</a>
+      <a class="nav-item" href="/concepts/karma">Karma System</a>
+      <div class="nav-section-title">SDK Reference</div>
+      <a class="nav-item" href="/sdks/web4-api">WEB4 API (JS)</a>
+      <a class="nav-item" href="/sdks/web5-api">WEB5 API (JS)</a>
+      <a class="nav-item" href="/sdks/web6-api">WEB6 API (JS)</a>
+      <a class="nav-item" href="/sdks/web7-10">WEB7 to WEB10 (JS)</a>
+      <a class="nav-item" href="/sdks/dotnet">OASIS .NET SDK</a>
+      <div class="nav-section-title">REST API</div>
+      <a class="nav-item" href="/reference/avatar">Avatar</a>
+      <a class="nav-item" href="/reference/karma">Karma</a>
+      <a class="nav-item" href="/reference/data">Data &amp; Holons</a>
+      <a class="nav-item" href="/reference/nft">NFT &amp; Wallet</a>
+      <a class="nav-item" href="/reference/search">Search</a>
+      <a class="nav-item active" href="/reference/cql">CQL Queries</a>
+      <a class="nav-item" href="/reference/sandbox">CQL Sandbox</a>
+      <a class="nav-item" href="/reference/subscription">Subscription &amp; Usage</a>
+      <a class="nav-item" href="/reference/health">Health Checks</a>
+      <a class="nav-item" href="/reference/errors">Errors &amp; Codes</a>
+      <div class="nav-section-title">Provider Guides</div>
+      <a class="nav-item" href="/providers/overview">Provider Overview</a>
+      <a class="nav-item" href="/providers/holochain">Holochain / HoloNET</a>
+      <a class="nav-item" href="/providers/hyperdrive">HyperDrive</a>
+      <a class="nav-item" href="/providers/onode">ONODE Setup</a>
+      <a class="nav-item" href="/providers/ethereum">Ethereum / EVM</a>
+      <a class="nav-item" href="/providers/custom">Building a Provider</a>
+      <div class="nav-section-title">Resources</div>
+      <a class="nav-item" href="https://learn.oasisomniverse.one" target="_blank">Tutorials ↗</a>
+      <a class="nav-item" href="https://oportal.oasisomniverse.one/developer" target="_blank">Dev Portal ↗</a>
+      <a class="nav-item" href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank">GitHub ↗</a>
+      <a class="nav-item" href="/changelog">Changelog</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://oasisomniverse.one" target="_blank">oasisomniverse.one</a>
+      <a href="https://github.com/NextGenSoftwareUK/OASIS/blob/master/Docs/WEB4_One_World_Of_Data.md" target="_blank">WEB4: One World of Data</a>
+      <a href="https://discord.gg/oasis" target="_blank">Discord Community</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="/">OASIS Docs</a><span class="breadcrumb-sep">/</span><a href="/reference/search">REST API</a><span class="breadcrumb-sep">/</span><span>CQL Queries</span></div>
+      <div class="page-meta"><span class="badge badge-reference">Reference</span></div>
+      <h1 class="page-title">CQL Queries (COSMIC ORM)</h1>
+      <p class="page-desc">Query holons on any provider with CQL v1: a bounded JSON query that WEB4 compiles natively for MongoDB, SQLite, Neo4j, blockchains and more.</p>
+    </div>
+
+    <h2 id="overview">Overview</h2>
+    <p>CQL v1 is a <strong>JSON query description</strong>, not a text language. You post a JSON object to WEB4 and the server compiles it for the provider you name. A query can never contain executable C#, SQL or Cypher, so the same query is safe on every provider. CQL is the query layer of the COSMIC ORM.</p>
+    <div class="api-table-wrap"><table><thead><tr><th>Requirement</th><th>Detail</th></tr></thead><tbody><tr><td>Auth</td><td><code>Authorization: Bearer &lt;JWT&gt;</code> of a signed-in avatar</td></tr><tr><td><code>Idempotency-Key</code></td><td>Required header. Use a new value for each new query intent; re-sending the same key returns HTTP 409.</td></tr><tr><td>Body</td><td>JSON object, at most 32,768 bytes. Unknown members are rejected.</td></tr></tbody></table></div>
+
+    <h2 id="query-kinds">Query Kinds</h2>
+    <p>Each kind has its own route and request shape (the <code>Cql*V1Request</code> models, with examples on WEB4's Swagger page).</p>
+    <div class="api-table-wrap"><table><thead><tr><th>Route</th><th>What it returns</th></tr></thead><tbody><tr><td><code>POST /api/data/query-cql</code></td><td>Matching holons (filter, order, page)</td></tr><tr><td><code>POST /api/data/query-cql/indexed</code></td><td>Holons found through a provider index</td></tr><tr><td><code>POST /api/data/query-cql/scalar</code></td><td>One value: count, any, min, max, sum, average</td></tr><tr><td><code>POST /api/data/query-cql/indexed/scalar</code></td><td>A scalar over an index</td></tr><tr><td><code>POST /api/data/query-cql/projection</code></td><td>Selected fields only</td></tr><tr><td><code>POST /api/data/query-cql/projection/mixed</code></td><td>Fields and metadata paths together</td></tr><tr><td><code>POST /api/data/query-cql/grouped</code></td><td>Grouped results with aggregates</td></tr><tr><td><code>POST /api/data/query-cql/set</code></td><td>Set operations (union, intersect, except)</td></tr><tr><td><code>POST /api/data/query-cql/join</code></td><td>Joins between holon types</td></tr><tr><td><code>POST /api/data/query-cql/composition</code></td><td>Several steps composed into one query</td></tr><tr><td><code>POST /api/data/query-cql/federation</code></td><td>One query across several providers</td></tr><tr><td><code>GET /api/data/query-cql/providers</code></td><td>Providers that accept CQL on this node</td></tr></tbody></table></div>
+
+    <h2 id="basic-query">A Basic Query</h2>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">json</span><button class="copy-btn">Copy</button></div>
+      <pre>{
+  &quot;provider&quot;: &quot;MongoDBOASIS&quot;,
+  &quot;filters&quot;: [
+    { &quot;field&quot;: &quot;Name&quot;, &quot;scalar&quot;: &quot;String&quot;, &quot;operator&quot;: &quot;Contains&quot;, &quot;value&quot;: &quot;coffee&quot; }
+  ],
+  &quot;orderBy&quot;: &quot;Name&quot;,
+  &quot;descending&quot;: false,
+  &quot;skip&quot;: 0,
+  &quot;take&quot;: 10,
+  &quot;includeMetadata&quot;: false
+}</pre>
+    </div>
+    <p>A filter names a whitelisted <code>field</code> or a typed <code>metadataPath</code> (up to four segments), a <code>scalar</code> type (<code>String</code>, <code>Integer</code>, <code>Boolean</code>, <code>Guid</code>, <code>DateTime</code>, <code>UInt64</code>, <code>Decimal</code>, <code>Double</code>, <code>Single</code>), an <code>operator</code> (<code>Equal</code>, <code>NotEqual</code>, <code>GreaterThan</code>, <code>GreaterThanOrEqual</code>, <code>LessThan</code>, <code>LessThanOrEqual</code>, <code>Contains</code>, <code>StartsWith</code>, <code>EndsWith</code>, <code>Exists</code>, <code>IsNull</code>) and a <code>value</code>. <code>filters</code> are ANDed; <code>anyOf</code> is ORed; <code>anyChildren</code> and <code>anyDescendants</code> match holons by their children.</p>
+
+    <h2 id="calling">Calling It</h2>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">bash</span><button class="copy-btn">Copy</button></div>
+      <pre>curl -X POST &quot;https://api.web4.oasisomniverse.one/api/data/query-cql&quot; \
+  -H &quot;Authorization: Bearer $OASIS_JWT&quot; \
+  -H &quot;Idempotency-Key: $(uuidgen)&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d @query.json</pre>
+    </div>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">javascript</span><button class="copy-btn">Copy</button></div>
+      <pre>import { OASISClient } from &#x27;@oasisomniverse/web4-api&#x27;;
+
+const oasis = new OASISClient({ baseUrl: &#x27;https://api.web4.oasisomniverse.one&#x27; });
+await oasis.auth.login({ username, password });
+
+const { result } = await oasis.data.query({   // POST /api/data/query-cql
+  provider: &#x27;MongoDBOASIS&#x27;,
+  filters: [{ field: &#x27;Name&#x27;, scalar: &#x27;String&#x27;, operator: &#x27;Contains&#x27;, value: &#x27;coffee&#x27; }],
+  take: 10
+});</pre>
+    </div>
+    <p>From the STAR CLI, beam in first (<code>avatar beamin</code>), then run <code>cql variants</code>, <code>cql example</code> or <code>cql run query --file query.json</code>. The CLI sends a fresh <code>Idempotency-Key</code> on every run unless you pass <code>--idempotency-key</code>.</p>
+
+    <h2 id="providers">Providers</h2>
+    <p>MongoDB, SQLite and Neo4j run CQL natively on your own data, with atomic writes where HyperDrive needs them. In the hosted <a href="/reference/sandbox">CQL sandbox</a> more than 100 providers return real records, including the blockchain, IPFS, vector and time-series providers. Ask the node which it supports with <code>GET /api/data/query-cql/providers</code>.</p>
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <div class="callout-title">Try it without setup</div>
+        <p>The WEB4 CQL sandbox gives you a demo avatar and live providers in the browser. See <a href='/reference/sandbox'>CQL Sandbox</a>.</p>
+      </div>
+    </div>
+
+    <div class="doc-nav">
+      <a href="/reference/search"><div class="nav-direction">← Previous</div><div class="nav-title">Search API</div></a>
+      <a class="next" href="/reference/sandbox"><div class="nav-direction">Next →</div><div class="nav-title">CQL Sandbox</div></a>
+    </div>
+  </main>
+
+  <aside class="rail">
+    <div class="rail-title">On this page</div>
+    <nav class="rail-nav">
+      <a href="#overview">Overview</a>
+      <a href="#query-kinds">Query Kinds</a>
+      <a href="#basic-query">A Basic Query</a>
+      <a href="#calling">Calling It</a>
+      <a href="#providers">Providers</a>
+    </nav>
+  </aside>
+</div>
+<script src="../assets/js/site.js?v=20261116c"></script>
+</body>
+</html>

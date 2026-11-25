@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subscription &amp; Usage — OASIS Docs</title>
+<meta name="description" content="Plans, usage, quotas, overages and app-owner billing across WEB4 to WEB10.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Titillium+Web:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261123n">
+</head>
+<body>
+<button class="mobile-menu-btn">&#9776;</button>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="/"><div class="sidebar-logo-icon">O</div><div class="sidebar-logo-text"><span class="site-name">OASIS DOCS</span><span class="site-sub">Developer Reference</span></div></a>
+    <div class="sidebar-search"><input type="search" placeholder="Search docs…" aria-label="Search"></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item" href="/">Home</a>
+      <a class="nav-item" href="/concepts/architecture">Architecture</a>
+      <a class="nav-item" href="/concepts/holons">Holons &amp; Data Model</a>
+      <a class="nav-item" href="/concepts/did-auth">DID Authentication</a>
+      <a class="nav-item" href="/concepts/karma">Karma System</a>
+      <div class="nav-section-title">SDK Reference</div>
+      <a class="nav-item" href="/sdks/web4-api">WEB4 API (JS)</a>
+      <a class="nav-item" href="/sdks/web5-api">WEB5 API (JS)</a>
+      <a class="nav-item" href="/sdks/web6-api">WEB6 API (JS)</a>
+      <a class="nav-item" href="/sdks/web7-10">WEB7 to WEB10 (JS)</a>
+      <a class="nav-item" href="/sdks/dotnet">OASIS .NET SDK</a>
+      <div class="nav-section-title">REST API</div>
+      <a class="nav-item" href="/reference/avatar">Avatar</a>
+      <a class="nav-item" href="/reference/karma">Karma</a>
+      <a class="nav-item" href="/reference/data">Data &amp; Holons</a>
+      <a class="nav-item" href="/reference/nft">NFT &amp; Wallet</a>
+      <a class="nav-item" href="/reference/search">Search</a>
+      <a class="nav-item" href="/reference/cql">CQL Queries</a>
+      <a class="nav-item" href="/reference/sandbox">CQL Sandbox</a>
+      <a class="nav-item active" href="/reference/subscription">Subscription &amp; Usage</a>
+      <a class="nav-item" href="/reference/health">Health Checks</a>
+      <a class="nav-item" href="/reference/errors">Errors &amp; Codes</a>
+      <div class="nav-section-title">Provider Guides</div>
+      <a class="nav-item" href="/providers/overview">Provider Overview</a>
+      <a class="nav-item" href="/providers/holochain">Holochain / HoloNET</a>
+      <a class="nav-item" href="/providers/hyperdrive">HyperDrive</a>
+      <a class="nav-item" href="/providers/onode">ONODE Setup</a>
+      <a class="nav-item" href="/providers/ethereum">Ethereum / EVM</a>
+      <a class="nav-item" href="/providers/custom">Building a Provider</a>
+      <div class="nav-section-title">Resources</div>
+      <a class="nav-item" href="https://learn.oasisomniverse.one" target="_blank">Tutorials ↗</a>
+      <a class="nav-item" href="https://oportal.oasisomniverse.one/developer" target="_blank">Dev Portal ↗</a>
+      <a class="nav-item" href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank">GitHub ↗</a>
+      <a class="nav-item" href="/changelog">Changelog</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://oasisomniverse.one" target="_blank">oasisomniverse.one</a>
+      <a href="https://github.com/NextGenSoftwareUK/OASIS/blob/master/Docs/WEB4_One_World_Of_Data.md" target="_blank">WEB4: One World of Data</a>
+      <a href="https://discord.gg/oasis" target="_blank">Discord Community</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="/">OASIS Docs</a><span class="breadcrumb-sep">/</span><a href="/reference/search">REST API</a><span class="breadcrumb-sep">/</span><span>Subscription &amp; Usage</span></div>
+      <div class="page-meta"><span class="badge badge-reference">Reference</span></div>
+      <h1 class="page-title">Subscription &amp; Usage API</h1>
+      <p class="page-desc">Plans, usage, quotas, overages and app-owner billing across WEB4 to WEB10.</p>
+    </div>
+
+    <h2 id="plans">Plans and Checkout</h2>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/subscription/plans</span></div>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/subscription/checkout/session</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/subscription/checkout/session/{sessionId}</span></div>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/subscription/billing/portal</span></div>
+    <p>List plans, start a Stripe checkout, check its result, and open the billing portal to change or cancel a plan.</p>
+
+    <h2 id="usage">Your Usage</h2>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/subscription/usage/current</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/subscription/usage/series?from={date}&amp;to={date}</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/subscription/usage/estimate</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/subscription/usage/events?limit=100</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/subscription/usage/audit?limit=100</span></div>
+    <p>Current quotas, usage over time, a pay-as-you-go estimate (so far and projected), individual operations and the immutable audit trail. You only ever see your own usage.</p>
+
+    <h2 id="overages">Overages</h2>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/subscription/overages/prices</span></div>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/subscription/overages/statements</span></div>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/subscription/overages/pay-now</span></div>
+    <p>Usage beyond your plan needs your consent first; it is billed monthly, or you can pay a statement straight away.</p>
+
+    <h2 id="metering">Metering for Services</h2>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/subscription/usage/authorize</span></div>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/subscription/usage/start</span></div>
+    <div class="endpoint"><span class="method method-post">POST</span><span class="endpoint-path">/api/subscription/usage/settle</span></div>
+    <p>WEB5 to WEB10 reserve, start and settle each metered call against the caller's subscription. Replaying the same operation returns the original decision, so retries never double-charge.</p>
+
+    <h2 id="app-owners">App Owners and Admins</h2>
+    <p>App owners see usage for their own apps under <code>/api/subscription/app-owner/*</code>, including pay-as-you-go with a monthly cap. Administrators use <code>/api/subscription/admin/*</code>. The full list of routes is in the <a href="https://github.com/NextGenSoftwareUK/OASIS/tree/master/Docs/Devs/API%20Documentation/WEB4%20OASIS%20API" target="_blank">WEB4 Postman collections</a>.</p>
+
+    <div class="doc-nav">
+      <a href="/reference/sandbox"><div class="nav-direction">← Previous</div><div class="nav-title">CQL Sandbox</div></a>
+      <a class="next" href="/reference/health"><div class="nav-direction">Next →</div><div class="nav-title">Health Checks</div></a>
+    </div>
+  </main>
+
+  <aside class="rail">
+    <div class="rail-title">On this page</div>
+    <nav class="rail-nav">
+      <a href="#plans">Plans and Checkout</a>
+      <a href="#usage">Your Usage</a>
+      <a href="#overages">Overages</a>
+      <a href="#metering">Metering for Services</a>
+      <a href="#app-owners">App Owners and Admins</a>
+    </nav>
+  </aside>
+</div>
+<script src="../assets/js/site.js?v=20261116c"></script>
+</body>
+</html>

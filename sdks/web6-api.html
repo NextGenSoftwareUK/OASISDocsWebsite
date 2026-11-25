@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WEB6 API (JS) — OASIS Docs</title>
+<meta name="description" content="@oasisomniverse/web6-api: completions, agents, holonic memory, FAHRN reasoning, A2A networking and more from JavaScript.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Titillium+Web:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261123n">
+</head>
+<body>
+<button class="mobile-menu-btn">&#9776;</button>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="/"><div class="sidebar-logo-icon">O</div><div class="sidebar-logo-text"><span class="site-name">OASIS DOCS</span><span class="site-sub">Developer Reference</span></div></a>
+    <div class="sidebar-search"><input type="search" placeholder="Search docs…" aria-label="Search"></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item" href="/">Home</a>
+      <a class="nav-item" href="/concepts/architecture">Architecture</a>
+      <a class="nav-item" href="/concepts/holons">Holons &amp; Data Model</a>
+      <a class="nav-item" href="/concepts/did-auth">DID Authentication</a>
+      <a class="nav-item" href="/concepts/karma">Karma System</a>
+      <div class="nav-section-title">SDK Reference</div>
+      <a class="nav-item" href="/sdks/web4-api">WEB4 API (JS)</a>
+      <a class="nav-item" href="/sdks/web5-api">WEB5 API (JS)</a>
+      <a class="nav-item active" href="/sdks/web6-api">WEB6 API (JS)</a>
+      <a class="nav-item" href="/sdks/web7-10">WEB7 to WEB10 (JS)</a>
+      <a class="nav-item" href="/sdks/dotnet">OASIS .NET SDK</a>
+      <div class="nav-section-title">REST API</div>
+      <a class="nav-item" href="/reference/avatar">Avatar</a>
+      <a class="nav-item" href="/reference/karma">Karma</a>
+      <a class="nav-item" href="/reference/data">Data &amp; Holons</a>
+      <a class="nav-item" href="/reference/nft">NFT &amp; Wallet</a>
+      <a class="nav-item" href="/reference/search">Search</a>
+      <a class="nav-item" href="/reference/cql">CQL Queries</a>
+      <a class="nav-item" href="/reference/sandbox">CQL Sandbox</a>
+      <a class="nav-item" href="/reference/subscription">Subscription &amp; Usage</a>
+      <a class="nav-item" href="/reference/health">Health Checks</a>
+      <a class="nav-item" href="/reference/errors">Errors &amp; Codes</a>
+      <div class="nav-section-title">Provider Guides</div>
+      <a class="nav-item" href="/providers/overview">Provider Overview</a>
+      <a class="nav-item" href="/providers/holochain">Holochain / HoloNET</a>
+      <a class="nav-item" href="/providers/hyperdrive">HyperDrive</a>
+      <a class="nav-item" href="/providers/onode">ONODE Setup</a>
+      <a class="nav-item" href="/providers/ethereum">Ethereum / EVM</a>
+      <a class="nav-item" href="/providers/custom">Building a Provider</a>
+      <div class="nav-section-title">Resources</div>
+      <a class="nav-item" href="https://learn.oasisomniverse.one" target="_blank">Tutorials ↗</a>
+      <a class="nav-item" href="https://oportal.oasisomniverse.one/developer" target="_blank">Dev Portal ↗</a>
+      <a class="nav-item" href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank">GitHub ↗</a>
+      <a class="nav-item" href="/changelog">Changelog</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://oasisomniverse.one" target="_blank">oasisomniverse.one</a>
+      <a href="https://github.com/NextGenSoftwareUK/OASIS/blob/master/Docs/WEB4_One_World_Of_Data.md" target="_blank">WEB4: One World of Data</a>
+      <a href="https://discord.gg/oasis" target="_blank">Discord Community</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="/">OASIS Docs</a><span class="breadcrumb-sep">/</span><a href="/sdks/web4-api">SDK Reference</a><span class="breadcrumb-sep">/</span><span>WEB6 API (JS)</span></div>
+      <div class="page-meta"><span class="badge badge-reference">SDK</span></div>
+      <h1 class="page-title">WEB6 AI SDK</h1>
+      <p class="page-desc">@oasisomniverse/web6-api: completions, agents, holonic memory, FAHRN reasoning, A2A networking and more from JavaScript.</p>
+    </div>
+
+    <h2 id="install">Installation</h2>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">terminal</span><button class="copy-btn">Copy</button></div>
+      <pre>npm install @oasisomniverse/web6-api</pre>
+    </div>
+
+    <h2 id="init">Initialisation</h2>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">javascript</span><button class="copy-btn">Copy</button></div>
+      <pre>import { Web6Client } from &#x27;@oasisomniverse/web6-api&#x27;;
+
+const ai = new Web6Client({ baseUrl: &#x27;https://api.web6.oasisomniverse.one&#x27; });
+ai.setToken(jwtFromWeb4);   // WEB6 uses the same OASIS identity as WEB4</pre>
+    </div>
+
+    <h2 id="modules">Modules</h2>
+    <div class="api-table-wrap"><table><thead><tr><th>Property</th><th>What it does</th></tr></thead><tbody><tr><td><code>ai.completion</code></td><td>Chat and text completions, streaming</td></tr><tr><td><code>ai.agent</code></td><td>Server-side agent runs (<code>run</code>, <code>feedback</code>)</td></tr><tr><td><code>ai.holonicMemory</code></td><td>Memory stored on holons: search, semantic search, documents, propagation</td></tr><tr><td><code>ai.holonicBraid</code>, <code>ai.reasoningNetwork</code>, <code>ai.fahrnSolve</code></td><td>Multi-model reasoning and FAHRN debate</td></tr><tr><td><code>ai.a2A</code></td><td>Agent-to-agent network: cards, messages, tasks, payments, JSON-RPC</td></tr><tr><td><code>ai.schedules</code>, <code>ai.channels</code></td><td>Scheduled agent runs and channel webhooks</td></tr><tr><td><code>ai.orchestrator</code></td><td>CrewAI, AutoGen and LangGraph workflows</td></tr><tr><td><code>ai.images</code>, <code>ai.speech</code>, <code>ai.video</code>, <code>ai.embedding</code>, <code>ai.rerank</code></td><td>Media and retrieval building blocks</td></tr><tr><td><code>ai.usage</code>, <code>ai.estimate</code></td><td>Your WEB6 usage and cost estimates</td></tr></tbody></table></div>
+    <p>Every method takes one args object: route tokens such as <code>{holonId}</code> are taken from it, and the rest is sent as the query string (GET/DELETE) or JSON body (POST/PUT). The package README lists all 125 methods.</p>
+
+    <h2 id="mcp">MCP Server</h2>
+    <p>The same capabilities are available to AI assistants through <code>@oasisomniverse/mcp-server</code>, which exposes the WEB4 to WEB10 APIs as MCP tools.</p>
+
+    <div class="doc-nav">
+      <a href="/sdks/web5-api"><div class="nav-direction">← Previous</div><div class="nav-title">WEB5 API (JS)</div></a>
+      <a class="next" href="/sdks/web7-10"><div class="nav-direction">Next →</div><div class="nav-title">WEB7 to WEB10 (JS)</div></a>
+    </div>
+  </main>
+
+  <aside class="rail">
+    <div class="rail-title">On this page</div>
+    <nav class="rail-nav">
+      <a href="#install">Installation</a>
+      <a href="#init">Initialisation</a>
+      <a href="#modules">Modules</a>
+      <a href="#mcp">MCP Server</a>
+    </nav>
+  </aside>
+</div>
+<script src="../assets/js/site.js?v=20261116c"></script>
+</body>
+</html>
