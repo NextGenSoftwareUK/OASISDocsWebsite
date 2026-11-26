@@ -116,6 +116,34 @@ const { result } = await oasis.data.query({   // POST /api/data/query-cql
     </div>
     <p>From the STAR CLI, beam in first (<code>avatar beamin</code>), then run <code>cql variants</code>, <code>cql example</code> or <code>cql run query --file query.json</code>. The CLI sends a fresh <code>Idempotency-Key</code> on every run unless you pass <code>--idempotency-key</code>.</p>
 
+    <h2 id="sql">SQL-like Queries</h2>
+    <p><code>POST /api/data/query-cql/sql</code> takes <code>{ &quot;query&quot;, &quot;parameters&quot;? }</code>. WEB4 compiles the statement into the matching typed CQL request and runs it, with the same permissions, limits and results. Statements are read-only. Bind values with <code>@name</code> parameters instead of pasting them into the text. The request may be up to 16 KB and the statement up to 4,096 characters. The <code>X-OASIS-CQL-Path</code> response header names the typed endpoint that ran; invalid text returns 400 <code>CQL_SQL_INVALID</code> with the parser&#x27;s message.</p>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">bash</span><button class="copy-btn">Copy</button></div>
+      <pre>curl -X POST &quot;https://api.web4.oasisomniverse.one/api/data/query-cql/sql&quot;   -H &quot;Authorization: Bearer $OASIS_JWT&quot;   -H &quot;Idempotency-Key: $(uuidgen)&quot;   -H &quot;Content-Type: application/json&quot;   -d &#x27;{&quot;query&quot;:&quot;SELECT Id, Name FROM MongoDBOASIS WHERE Version &gt;= @min LIMIT 5&quot;,&quot;parameters&quot;:{&quot;min&quot;:1}}&#x27;</pre>
+    </div>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">javascript</span><button class="copy-btn">Copy</button></div>
+      <pre>const { result } = await oasis.data.sql({
+  query: &#x27;SELECT COUNT(*) AS Total FROM SQLLiteDBOASIS&#x27;
+});</pre>
+    </div>
+
+    <h2 id="ask">Free-text Queries</h2>
+    <p><code>POST /api/data/query-cql/ask</code> takes <code>{ &quot;question&quot;, &quot;execute&quot;? }</code>. WEB4 asks WEB6 to draft a statement from your question (this uses your WEB6 allowance), checks it with the same parser and runs it. Set <code>execute</code> to <code>false</code> to get <code>{ sql }</code> back and review it first. When it runs, the <code>X-OASIS-CQL-Text</code> header holds the URL-encoded statement. A question that cannot be expressed returns 422 <code>CQL_ASK_UNSUPPORTED</code>; a WEB6 failure returns 502. Questions may be up to 1,000 characters.</p>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">bash</span><button class="copy-btn">Copy</button></div>
+      <pre>curl -X POST &quot;https://api.web4.oasisomniverse.one/api/data/query-cql/ask&quot;   -H &quot;Authorization: Bearer $OASIS_JWT&quot;   -H &quot;Idempotency-Key: $(uuidgen)&quot;   -H &quot;Content-Type: application/json&quot;   -d &#x27;{&quot;question&quot;:&quot;Show five active records from MongoDB ordered by name&quot;,&quot;execute&quot;:true}&#x27;</pre>
+    </div>
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">javascript</span><button class="copy-btn">Copy</button></div>
+      <pre>const draft = await oasis.data.ask({
+  question: &#x27;How many records are in SQLite?&#x27;,
+  execute: false
+});
+console.log(draft.result.sql);</pre>
+    </div>
+
     <h2 id="providers">Providers</h2>
     <p>MongoDB, SQLite and Neo4j run CQL natively on your own data, with atomic writes where HyperDrive needs them. In the hosted <a href="/reference/sandbox">CQL sandbox</a> more than 100 providers return real records, including the blockchain, IPFS, vector and time-series providers. Ask the node which it supports with <code>GET /api/data/query-cql/providers</code>.</p>
     <div class="callout callout-tip">
@@ -139,6 +167,8 @@ const { result } = await oasis.data.query({   // POST /api/data/query-cql
       <a href="#query-kinds">Query Kinds</a>
       <a href="#basic-query">A Basic Query</a>
       <a href="#calling">Calling It</a>
+      <a href="#sql">SQL-like Queries</a>
+      <a href="#ask">Free-text Queries</a>
       <a href="#providers">Providers</a>
     </nav>
   </aside>
