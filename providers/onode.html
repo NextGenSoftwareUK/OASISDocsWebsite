@@ -136,6 +136,30 @@
   onode</span></pre>
     </div>
 
+    <h2 id="hosting">Hosting an ONODE</h2>
+    <p>ONODEs run on many kinds of host: Railway, Holo, ThreeFold, Akash, Flux, Fly.io or the Oracle free tier, Raspberry Pis and home servers. Each node should only start what its host supports.</p>
+
+    <h3>Host profiles and connection modes (proposed, not built yet)</h3>
+    <p>Do not add these keys to a live configuration: no code reads them yet.</p>
+    <ul>
+      <li><code>ONODE.HostProfile</code>: <code>Name</code>, <code>CanRunSidecars</code>, <code>AllowedSidecars</code>, <code>MaxMemoryMB</code>, <code>Architecture</code> (x64 or arm64).</li>
+      <li>Per provider, <code>ConnectionMode</code>: <code>External</code> (hosted, with <code>ConnectionString</code>), <code>Local</code> (same machine or private network, with <code>LocalAddress</code>), <code>Sidecar</code> (the node starts it) or <code>Disabled</code>.</li>
+      <li>A node activates a provider only if its mode works on that host. Unsupported providers are skipped with a clear log line, and HyperDrive uses only the providers the node really has.</li>
+    </ul>
+
+    <h3>Cheap provider hosting</h3>
+    <ul>
+      <li>Neo4j AuraDB Free; MongoDB Atlas Flex; SQLite and LocalFile on the node itself.</li>
+      <li>Upstash for Redis-like storage; IPFS gateways plus a free pinning tier.</li>
+      <li>Public or testnet RPC for blockchains; Holo for Holochain.</li>
+      <li>Peer-to-peer networks that suit a decentralised ONODE network: IPFS, Holochain, Nostr, ThreeFold, Ceramic and OrbitDB.</li>
+    </ul>
+    <p>Free-tier limits change, so check them before relying on one.</p>
+
+    <h3>On-demand sidecars (on the Development branch)</h3>
+    <p>The helper processes behind the CQL sandbox sources can start only when a query needs them and stop when idle. Settings are under <code>OASIS.Sandbox.Sidecars</code>: <code>OnDemand</code> (default <code>false</code>), <code>IdleMinutes</code> (default 10, minimum 2) and <code>AlwaysOn</code> (comma-separated source providers). Log lines start with <code>SIDECAR</code> (start, ready, stop, crash, failure). Wizard avatars can read their state:</p>
+    <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/admin/cql/sidecars</span></div>
+
     <div class="doc-nav">
       <a href="/providers/hyperdrive"><div class="nav-direction">← Previous</div><div class="nav-title">HyperDrive</div></a>
       <a class="next" href="/providers/ethereum"><div class="nav-direction">Next →</div><div class="nav-title">Ethereum / EVM</div></a>
@@ -150,6 +174,7 @@
       <a href="#oasisdna">OASISDNA.json</a>
       <a href="#joining-onet">Joining ONET</a>
       <a href="#docker">Docker</a>
+      <a href="#hosting">Hosting an ONODE</a>
     </nav>
   </aside>
 </div>

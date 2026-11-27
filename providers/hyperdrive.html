@@ -116,6 +116,8 @@
     <div class="endpoint"><span class="method method-get">GET</span><span class="endpoint-path">/api/hyperdrive/failover/triggers</span></div>
     <p>Quota and cost controls live under <code>/api/hyperdrive/quota/*</code> and <code>/api/hyperdrive/costs/*</code>. MongoDB must run as a replica set for HyperDrive's atomic writes.</p>
 
+    <p>Fail-over also routes around providers that are stopped. A stopped provider can stay in the lists: HyperDrive skips it until it is back. See <a href="/providers/onode#hosting">Hosting an ONODE</a>.</p>
+
     <h2 id="load-balancing">Load Balancing</h2>
     <p>When <code>AutoLoadBalanceEnabled</code> is true, HyperDrive spreads reads across the providers in <code>AutoLoadBalanceProviders</code> with a round-robin, skipping any that are down. Suitable for read-heavy deployments with multiple fast providers.</p>
 
