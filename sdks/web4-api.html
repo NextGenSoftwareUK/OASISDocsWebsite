@@ -127,12 +127,22 @@ oasis.setToken(jwtToken, { avatarId, username });</pre>
       <li><span class="method-name">nft.getBalance(id, chainType?)</span><span class="method-desc">Get wallet balance across chains.</span></li>
     </ul>
 
-    <h2 id="map-module">Map Module — <code>oasis.map</code></h2>
+    <h2 id="map-module">Maps, recorded routes and shared places</h2>
+    <p>The generated source client exposes the methods below. This reference describes qualified WEB4 2.0.18 source; npm 2.0.17 and deployed server revisions have separate release gates. The new cross-app attribution field is not yet accepted on a hosted deployment.</p>
     <ul class="method-list">
-      <li><span class="method-name">map.getSpawn()</span><span class="method-desc">Get global spawn point data for Our World map.</span></li>
-      <li><span class="method-name">map.getGeoHotSpots()</span><span class="method-desc">Retrieve active geospatial hotspots.</span></li>
-      <li><span class="method-name">map.getGeoNFTs()</span><span class="method-desc">Retrieve geolocated NFTs.</span></li>
+      <li><span class="method-name">map.list({offset, limit})</span><span class="method-desc">List the avatar's route summaries without eagerly fetching geometry.</span></li>
+      <li><span class="method-name">map.getRoutesById({id})</span><span class="method-desc">Read permitted route geometry and the revisions required for conditional updates.</span></li>
+      <li><span class="method-name">map.create(writeIntent)</span><span class="method-desc">Save a recorded route using its operation identity and expected revisions.</span></li>
+      <li><span class="method-name">map.updateAccess({id, ...writeIntent})</span><span class="method-desc">Conditionally change name or public access using the returned revisions.</span></li>
+      <li><span class="method-name">places.nearby({category, latitude, longitude})</span><span class="method-desc">Query the configured real-world catalogue.</span></li>
+      <li><span class="method-name">places.observe(observation)</span><span class="method-desc">Report a fresh physical-place observation for the authenticated avatar.</span></li>
+      <li><span class="method-name">places.presence()</span><span class="method-desc">Read active physical-place visits.</span></li>
+      <li><span class="method-name">places.visits({offset, limit})</span><span class="method-desc">Read the avatar's durable cross-app visit and karma history.</span></li>
     </ul>
+    <p>An observation contains a stable GUID <code>id</code>, catalogue <code>placeId</code>, actual <code>latitude</code>/<code>longitude</code>, fresh UTC <code>observedUtc</code> and optional <code>sourceApp</code>. The label is 1–256 characters without surrounding whitespace or control characters. It is reported metadata, not authenticated application identity. Legacy requests without it retain Our World attribution.</p>
+    <p>Arrival within 50m earns 100 karma on the first physical-place visit and 50 on a return after departure at 100m or farther. Changing app labels does not reset eligibility or create another active visit. A successful departure or already-active observation can return no new visit. Check <code>isError</code> and <code>isWarning</code>, not HTTP status alone. Visit pages contain <code>items</code>, <code>total</code> and optional <code>nextOffset</code>; stop on absent/null continuation.</p>
+    <p>OPORTAL reads the same visit ledger as Our World and other apps. GeoNFTs, WEB5 hotspots and quest/objective locations remain authoritative domain records layered on the map. A route import or source label does not prove walked distance or earn a place reward. MapLibre camera controls are separate from legacy server renderer operations requiring a compatible map runtime.</p>
+    <p><a href="https://github.com/NextGenSoftwareUK/OASIS/blob/Development/Docs/Devs/API%20Documentation/WEB4%20OASIS%20API/Map-API.md">Full route, geometry, revision and place contracts</a> · <a href="https://github.com/NextGenSoftwareUK/OASIS-API-Javascipt-Package-WEB4/blob/work/gpt-oportal-map-integration/docs/place-visits.md">Source client examples and operation identity</a></p>
 
     <h2 id="hyperdrive-module">HyperDrive Module — <code>oasis.hyperdrive</code></h2>
     <ul class="method-list">
